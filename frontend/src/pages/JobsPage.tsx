@@ -53,7 +53,7 @@ export const JobsPage: React.FC = () => {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         
         {/* Top Search Bar */}
-        <div className="mb-10">
+        <div className="mb-10 anim-fade-up">
           <JobSearch
             onSearch={handleSearch}
             initialQuery={query}
@@ -63,7 +63,7 @@ export const JobsPage: React.FC = () => {
         </div>
 
         {/* Header Summary & Mobile Filter Toggle */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 anim-fade-up anim-delay-1">
           <div>
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight dark:text-white">
               Explore All Jobs
@@ -79,7 +79,7 @@ export const JobsPage: React.FC = () => {
           <div className="lg:hidden">
             <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" className="gap-2 anim-active-press">
                   <SlidersHorizontal size={16} />
                   Filters
                 </Button>
@@ -115,7 +115,7 @@ export const JobsPage: React.FC = () => {
         </div>
 
         {/* 2-Column Desktop Layout: Sidebar Filters & Results */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start anim-fade-up anim-delay-2">
           
           {/* Desktop Filters Sidebar */}
           <div className="hidden lg:block lg:col-span-1 sticky top-28">

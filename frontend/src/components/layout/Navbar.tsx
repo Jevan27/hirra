@@ -42,7 +42,7 @@ export const Navbar: React.FC = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className={`text-sm font-semibold transition-colors duration-150 ${
+                className={`text-sm font-semibold anim-transition-colors ${
                   link.active
                     ? 'text-indigo-600 dark:text-indigo-400 font-bold'
                     : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
@@ -56,12 +56,12 @@ export const Navbar: React.FC = () => {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-3.5">
-          <button className="hidden sm:inline-flex text-sm font-semibold text-slate-700 hover:text-indigo-600 px-3 py-2 transition-colors dark:text-slate-300 dark:hover:text-white">
+          <button className="hidden sm:inline-flex text-sm font-semibold text-slate-700 hover:text-indigo-600 px-3 py-2 anim-transition-colors anim-active-press dark:text-slate-300 dark:hover:text-white">
             Sign In
           </button>
 
           <Button 
-            className="hidden sm:inline-flex bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-5 h-11 font-semibold shadow-md shadow-indigo-600/25 active:scale-95 transition-all"
+            className="hidden sm:inline-flex bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-5 h-11 font-semibold shadow-md shadow-indigo-600/25 anim-active-press anim-transition-shadow"
             onClick={() => alert('Welcome to Hirra! Employer & Job seeker registration is live.')}
           >
             Get Started
@@ -70,7 +70,7 @@ export const Navbar: React.FC = () => {
           {/* User Profile Avatar Icon from reference */}
           <button 
             aria-label="User Profile"
-            className="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-100 transition-colors dark:bg-slate-800 dark:border-slate-700 dark:text-indigo-400"
+            className="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 hover:bg-indigo-100 anim-transition-colors anim-active-press dark:bg-slate-800 dark:border-slate-700 dark:text-indigo-400"
           >
             <User size={19} />
           </button>

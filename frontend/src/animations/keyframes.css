@@ -1,0 +1,132 @@
+/* Hirra Animation System - Keyframes Definition */
+
+:root {
+  --dur-fast: 150ms;
+  --dur-normal: 220ms;
+  --dur-smooth: 320ms;
+  --dur-slow: 480ms;
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decel: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accel: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+/* Subtle upward fade entrance */
+@keyframes hirra-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pure opacity fade entrance */
+@keyframes hirra-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Downward fade for popovers, notifications, or dropdown menus */
+@keyframes hirra-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale & fade entrance for cards and interactive dialogs */
+@keyframes hirra-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth linear shimmer sweep for skeleton loading states */
+@keyframes hirra-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Subtle micro-pulse for indicators or tags */
+@keyframes hirra-subtle-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+/* Right slide-in for drawers (right to left) */
+@keyframes hirra-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Right slide-out for drawers (left to right) */
+@keyframes hirra-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Left slide-in for mobile filter drawer */
+@keyframes hirra-slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Left slide-out for mobile filter drawer */
+@keyframes hirra-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Fade out for overlay dismissals */
+@keyframes hirra-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+

@@ -9,7 +9,8 @@ import {
   Send, 
   Bookmark, 
   ExternalLink,
-  Briefcase
+  Briefcase,
+  ChevronRight
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { CompanyLogo } from '@/components/companies/CompanyLogo';
@@ -78,6 +79,17 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ jobId, onClose
         side="right"
         className="w-full sm:w-[85vw] md:w-[70vw] lg:w-[48vw] xl:w-[42vw] sm:max-w-none p-0 flex flex-col h-full bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl focus:outline-none"
       >
+        {/* Left Border Floating Collapse Arrow Button (Vertically Centered) */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close details panel"
+          className="absolute -left-10 top-1/2 -translate-y-1/2 w-10 h-16 bg-white dark:bg-slate-900 border-y border-l border-r-0 border-slate-200 dark:border-slate-800 rounded-l-2xl hidden sm:flex items-center justify-center text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 shadow-md hover:shadow-lg anim-transition-colors anim-active-press group z-50 cursor-pointer"
+          title="Collapse panel"
+        >
+          <ChevronRight size={22} className="group-hover:translate-x-0.5 transition-transform" />
+        </button>
+
         <SheetTitle className="sr-only">
           {job ? `${job.title} at ${job.companyName}` : 'Job Details'}
         </SheetTitle>
@@ -155,7 +167,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ jobId, onClose
                   type="button"
                   onClick={handleShare}
                   aria-label="Share Job Link"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-600 transition-colors dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-xs font-semibold text-slate-600 anim-transition-colors anim-active-press dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                   title="Copy link"
                 >
                   {copied ? (
@@ -176,7 +188,7 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ jobId, onClose
                   onClick={() => jobId && toggleBookmark(jobId)}
                   aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark job'}
                   className={cn(
-                    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold transition-colors dark:border-slate-700',
+                    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold anim-transition-colors anim-active-press dark:border-slate-700',
                     bookmarked
                       ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-950/60 dark:border-indigo-900/60 dark:text-indigo-400'
                       : 'hover:bg-slate-100 text-slate-600 dark:text-slate-300 dark:hover:bg-slate-800'
@@ -184,11 +196,12 @@ export const JobDetailDrawer: React.FC<JobDetailDrawerProps> = ({ jobId, onClose
                 >
                   <Bookmark
                     size={14}
-                    className={
+                    className={cn(
+                      'transition-transform duration-200',
                       bookmarked
-                        ? 'fill-indigo-600 stroke-indigo-600 dark:fill-indigo-400 dark:stroke-indigo-400'
+                        ? 'fill-indigo-600 stroke-indigo-600 scale-110 dark:fill-indigo-400 dark:stroke-indigo-400'
                         : 'stroke-slate-500'
-                    }
+                    )}
                   />
                   <span>{bookmarked ? 'Saved' : 'Save'}</span>
                 </button>

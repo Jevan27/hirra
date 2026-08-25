@@ -38,7 +38,7 @@ export const JobSearch: React.FC<JobSearchProps> = ({
       {/* Main Large Search Card from Reference */}
       <form
         onSubmit={handleSearch}
-        className="bg-white rounded-2xl p-2.5 sm:p-3 shadow-search border border-slate-100/90 flex flex-col md:flex-row items-center gap-3 dark:bg-slate-900 dark:border-slate-800"
+        className="bg-white rounded-2xl p-2.5 sm:p-3 shadow-search border border-slate-100/90 flex flex-col md:flex-row items-center gap-3 anim-focus-ring anim-transition-shadow focus-within:ring-2 focus-within:ring-indigo-500/30 dark:bg-slate-900 dark:border-slate-800"
       >
         {/* Keyword Input */}
         <div className="flex-1 w-full flex items-center gap-3.5 px-4 py-2 sm:py-2.5">

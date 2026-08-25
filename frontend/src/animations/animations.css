@@ -1,0 +1,153 @@
+/* Hirra Animation System - Higher-Level Animation Classes */
+
+/* Entrance Animations */
+.anim-fade-up {
+  animation: hirra-fade-up var(--dur-slow) var(--ease-decel) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-fade-in {
+  animation: hirra-fade-in var(--dur-normal) var(--ease-decel) forwards;
+  will-change: opacity;
+}
+
+.anim-fade-down {
+  animation: hirra-fade-down var(--dur-normal) var(--ease-decel) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-scale-in {
+  animation: hirra-scale-in var(--dur-smooth) var(--ease-decel) forwards;
+  will-change: transform, opacity;
+}
+
+/* Stagger Delay Modifiers */
+.anim-delay-1 {
+  animation-delay: 60ms;
+}
+
+.anim-delay-2 {
+  animation-delay: 120ms;
+}
+
+.anim-delay-3 {
+  animation-delay: 180ms;
+}
+
+.anim-delay-4 {
+  animation-delay: 240ms;
+}
+
+.anim-delay-5 {
+  animation-delay: 300ms;
+}
+
+/* Hover & Interactive Utility Classes */
+.anim-hover-lift {
+  transition: transform var(--dur-normal) var(--ease-decel),
+              box-shadow var(--dur-normal) var(--ease-standard),
+              border-color var(--dur-normal) var(--ease-standard);
+}
+
+.anim-hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.anim-active-press {
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+
+.anim-active-press:active {
+  transform: scale(0.98);
+}
+
+/* Enhanced Focus Ring Smoothness */
+.anim-focus-ring {
+  transition: border-color var(--dur-normal) var(--ease-standard),
+              box-shadow var(--dur-normal) var(--ease-standard);
+}
+
+/* CSS-Only Shimmer Loading Effect */
+.anim-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(241, 245, 249, 0.8) 0%,
+    rgba(226, 232, 240, 0.4) 50%,
+    rgba(241, 245, 249, 0.8) 100%
+  );
+  background-size: 200% 100%;
+  animation: hirra-shimmer 1.6s ease-in-out infinite;
+}
+
+[data-theme="dark"] .anim-shimmer,
+.dark .anim-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.8) 0%,
+    rgba(51, 65, 85, 0.4) 50%,
+    rgba(30, 41, 59, 0.8) 100%
+  );
+  background-size: 200% 100%;
+  animation: hirra-shimmer 1.6s ease-in-out infinite;
+}
+
+/* Slide-Over Drawer CSS Animations */
+.anim-sheet-right[data-state="open"] {
+  animation: hirra-slide-in-right 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+}
+
+.anim-sheet-right[data-state="closed"] {
+  animation: hirra-slide-out-right 260ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  will-change: transform;
+}
+
+.anim-sheet-left[data-state="open"] {
+  animation: hirra-slide-in-left 340ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+}
+
+.anim-sheet-left[data-state="closed"] {
+  animation: hirra-slide-out-left 260ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  will-change: transform;
+}
+
+/* Backdrop Smooth Fade */
+.anim-backdrop[data-state="open"] {
+  animation: hirra-fade-in 300ms var(--ease-decel) forwards;
+  will-change: opacity;
+}
+
+.anim-backdrop[data-state="closed"] {
+  animation: hirra-fade-out 250ms var(--ease-accel) forwards;
+  will-change: opacity;
+}
+
+
+/* Accessibility: Prefers Reduced Motion Global Enforcement */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .anim-fade-up,
+  .anim-fade-down,
+  .anim-scale-in {
+    transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .anim-hover-lift:hover {
+    transform: none !important;
+  }
+
+  .anim-active-press:active {
+    transform: none !important;
+  }
+}

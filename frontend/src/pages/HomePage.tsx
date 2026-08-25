@@ -80,22 +80,24 @@ export const HomePage: React.FC = () => {
           <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-4 dark:text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-4 anim-fade-up dark:text-white">
               Find work that works for <span className="text-indigo-600 dark:text-indigo-400">you.</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 md:mb-12 font-normal leading-relaxed dark:text-slate-400">
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 md:mb-12 font-normal leading-relaxed anim-fade-up anim-delay-1 dark:text-slate-400">
               Search thousands of opportunities from companies looking for their next great hire.
             </p>
 
             {/* Large Search Component */}
-            <JobSearch onSearch={handleHeroSearch} showPopularTags={true} />
+            <div className="anim-fade-up anim-delay-2">
+              <JobSearch onSearch={handleHeroSearch} showPopularTags={true} />
+            </div>
           </div>
         </section>
 
         {/* Featured Opportunities Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 anim-fade-up anim-delay-3">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-white">
@@ -112,35 +114,37 @@ export const HomePage: React.FC = () => {
               {isCustomSearch && (
                 <button
                   onClick={handleResetSearch}
-                  className="text-sm font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
+                  className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors dark:text-slate-400 dark:hover:text-white"
                 >
                   Clear Search
                 </button>
               )}
               <Link
                 to="/jobs"
-                className="group inline-flex items-center gap-1.5 text-sm font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+                className="group inline-flex items-center gap-1.5 text-sm font-bold text-indigo-600 hover:text-indigo-700 anim-transition-colors dark:text-indigo-400 dark:hover:text-indigo-300"
               >
                 <span>View All</span>
                 <ArrowRight
                   size={16}
-                  className="group-hover:translate-x-1 transition-transform duration-150"
+                  className="group-hover:translate-x-1 transition-transform duration-200"
                 />
               </Link>
             </div>
           </div>
 
           {/* Job Grid Container */}
-          <JobGrid
-            jobs={displayJobs}
-            isLoading={isLoading}
-            isError={isError}
-            error={error}
-            onRetry={onRetry}
-            onResetFilters={handleResetSearch}
-            onSelectJob={(job) => setSelectedJobId(job.id)}
-            skeletonCount={6}
-          />
+          <div className="anim-fade-up anim-delay-4">
+            <JobGrid
+              jobs={displayJobs}
+              isLoading={isLoading}
+              isError={isError}
+              error={error}
+              onRetry={onRetry}
+              onResetFilters={handleResetSearch}
+              onSelectJob={(job) => setSelectedJobId(job.id)}
+              skeletonCount={6}
+            />
+          </div>
         </section>
       </main>
 

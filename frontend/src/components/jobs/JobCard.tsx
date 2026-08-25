@@ -62,7 +62,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job, className, onSelect }) =>
     <div
       onClick={handleCardClick}
       className={cn(
-        'group relative flex flex-col justify-between p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-card-hover hover:border-indigo-100 hover:-translate-y-0.5 cursor-pointer transition-all duration-200 dark:bg-slate-900/90 dark:border-slate-800 dark:hover:border-indigo-900/60',
+        'group relative flex flex-col justify-between p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-card-hover hover:border-indigo-100 anim-hover-lift anim-active-press cursor-pointer dark:bg-slate-900/90 dark:border-slate-800 dark:hover:border-indigo-900/60',
         className
       )}
     >
