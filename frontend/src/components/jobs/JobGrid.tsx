@@ -12,6 +12,7 @@ interface JobGridProps {
   error?: Error | null;
   onRetry?: () => void;
   onResetFilters?: () => void;
+  onSelectJob?: (job: Job) => void;
   skeletonCount?: number;
 }
 
@@ -22,6 +23,7 @@ export const JobGrid: React.FC<JobGridProps> = ({
   error,
   onRetry,
   onResetFilters,
+  onSelectJob,
   skeletonCount = 6,
 }) => {
   if (isLoading) {
@@ -44,7 +46,7 @@ export const JobGrid: React.FC<JobGridProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {jobs.map((job) => (
-        <JobCard key={job.id} job={job} />
+        <JobCard key={job.id} job={job} onSelect={onSelectJob} />
       ))}
     </div>
   );

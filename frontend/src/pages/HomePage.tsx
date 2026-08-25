@@ -5,12 +5,14 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { JobSearch } from '@/components/jobs/JobSearch';
 import { JobGrid } from '@/components/jobs/JobGrid';
+import { JobDetailDrawer } from '@/components/jobs/JobDetailDrawer';
 import { useFeaturedJobs } from '@/hooks/useFeaturedJobs';
 import { useJobs } from '@/hooks/useJobs';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useState<{ q: string; location: string } | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const {
     data: featuredJobs,
@@ -136,10 +138,17 @@ export const HomePage: React.FC = () => {
             error={error}
             onRetry={onRetry}
             onResetFilters={handleResetSearch}
+            onSelectJob={(job) => setSelectedJobId(job.id)}
             skeletonCount={6}
           />
         </section>
       </main>
+
+      {/* Slide-over Job Details Drawer */}
+      <JobDetailDrawer
+        jobId={selectedJobId}
+        onClose={() => setSelectedJobId(null)}
+      />
 
       <Footer />
     </div>

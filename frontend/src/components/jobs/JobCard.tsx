@@ -10,9 +10,10 @@ import { cn, formatSalary } from '@/lib/utils';
 interface JobCardProps {
   job: Job;
   className?: string;
+  onSelect?: (job: Job) => void;
 }
 
-export const JobCard: React.FC<JobCardProps> = ({ job, className }) => {
+export const JobCard: React.FC<JobCardProps> = ({ job, className, onSelect }) => {
   const navigate = useNavigate();
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const bookmarked = isBookmarked(job.id);
@@ -24,7 +25,11 @@ export const JobCard: React.FC<JobCardProps> = ({ job, className }) => {
   };
 
   const handleCardClick = () => {
-    navigate(`/jobs/${job.id}`);
+    if (onSelect) {
+      onSelect(job);
+    } else {
+      navigate(`/jobs/${job.id}`);
+    }
   };
 
   const getArrangementVariant = (arrangement: string) => {

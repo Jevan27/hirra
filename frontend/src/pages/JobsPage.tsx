@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { JobSearch } from '@/components/jobs/JobSearch';
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { JobFilters } from '@/components/jobs/JobFilters';
+import { JobDetailDrawer } from '@/components/jobs/JobDetailDrawer';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useJobs } from '@/hooks/useJobs';
@@ -19,6 +20,7 @@ export const JobsPage: React.FC = () => {
   const [employmentType, setEmploymentType] = useState('all');
   const [experienceLevel, setExperienceLevel] = useState('all');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const filters = {
     q: query,
@@ -137,6 +139,7 @@ export const JobsPage: React.FC = () => {
               error={error}
               onRetry={refetch}
               onResetFilters={handleResetFilters}
+              onSelectJob={(job) => setSelectedJobId(job.id)}
               skeletonCount={6}
             />
           </div>
@@ -144,6 +147,12 @@ export const JobsPage: React.FC = () => {
         </div>
 
       </main>
+
+      {/* Slide-over Job Details Drawer */}
+      <JobDetailDrawer
+        jobId={selectedJobId}
+        onClose={() => setSelectedJobId(null)}
+      />
 
       <Footer />
     </div>
