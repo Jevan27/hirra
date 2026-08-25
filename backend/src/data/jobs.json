@@ -1,0 +1,881 @@
+[
+  {
+    "id": "job-001",
+    "title": "Senior Frontend Engineer",
+    "companyId": "comp-acme",
+    "companyName": "Acme Technologies",
+    "location": "Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 80000,
+      "max": 120000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱80k – ₱120k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Senior",
+    "description": "We are seeking a Senior Frontend Engineer to lead frontend architecture and user experience across our core cloud management portal. You will build high-performance React and TypeScript applications with modern micro-frontend patterns.",
+    "responsibilities": [
+      "Architect and build reusable UI component systems with React, TypeScript, and modern CSS",
+      "Collaborate closely with product designers and backend engineers to define API contracts",
+      "Optimize core web vitals, client-side bundle size, and rendering performance",
+      "Mentor mid-level and junior frontend engineers through PR reviews and tech talks",
+      "Maintain automated testing pipelines including Jest, React Testing Library, and Playwright"
+    ],
+    "requirements": [
+      "5+ years of production experience in building web applications with modern React & TypeScript",
+      "Deep understanding of state management, browser rendering cycles, and web performance",
+      "Experience with modern build tooling (Vite, Turbopack, Webpack) and REST/GraphQL APIs",
+      "Strong aesthetic sensibility and attention to typography, spacing, and micro-interactions",
+      "Excellent communication and collaboration skills in a hybrid engineering squad"
+    ],
+    "benefits": [
+      "Comprehensive HMO coverage for you and up to 2 dependents from Day 1",
+      "₱50,000 annual tech & home office setup reimbursement",
+      "Flexible hybrid working schedule (2 days office, 3 days WFH)",
+      "Annual performance bonuses and equity stock options",
+      "18 days paid time off + 5 wellness rejuvenation days"
+    ],
+    "tags": ["React", "TypeScript", "Tailwind CSS", "Next.js", "Frontend"],
+    "postedAt": "2026-08-23T10:00:00.000Z",
+    "postedTime": "2d ago",
+    "featured": true
+  },
+  {
+    "id": "job-002",
+    "title": "Product Designer",
+    "companyId": "comp-vercel",
+    "companyName": "Vercel",
+    "location": "Manila, Philippines",
+    "workArrangement": "Remote",
+    "employmentType": "Contract",
+    "salary": {
+      "min": 65000,
+      "max": 88000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱65k – ₱88k/mo"
+    },
+    "category": "Design & Creative",
+    "experienceLevel": "Mid-Level",
+    "description": "Vercel is looking for a Product Designer to design world-class developer workflows, cloud deployment interfaces, and dashboard experiences that delight millions of engineers globally.",
+    "responsibilities": [
+      "Design intuitive, responsive desktop and mobile experiences for developer tools and analytics dashboards",
+      "Create high-fidelity interactive prototypes in Figma with strict design token fidelity",
+      "Conduct customer interviews and usability sessions with software engineers and engineering managers",
+      "Partner with frontend engineers to ensure design implementation matches vision down to the pixel",
+      "Evolve our design system with accessible components, micro-animations, and documentation"
+    ],
+    "requirements": [
+      "3+ years designing complex developer products, SaaS dashboards, or productivity software",
+      "Mastery of Figma, design systems, auto-layout, and interactive prototyping",
+      "Understanding of HTML/CSS fundamentals and technical constraints of web platforms",
+      "Strong portfolio demonstrating user journey mapping, information architecture, and UI polish",
+      "Ability to articulate design decisions clearly to cross-functional stakeholders"
+    ],
+    "benefits": [
+      "100% remote work flexibility with asynchronous collaboration",
+      "Monthly home office and co-working space stipend",
+      "Global team offsites in premier international locations",
+      "Latest M-series Apple Silicon MacBook Pro and 4K display provided",
+      "Generous learning budget for design conferences and masterclasses"
+    ],
+    "tags": ["Figma", "UI/UX", "Design Systems", "Prototyping", "Remote"],
+    "postedAt": "2026-08-25T11:00:00.000Z",
+    "postedTime": "5h ago",
+    "featured": true
+  },
+  {
+    "id": "job-003",
+    "title": "Data Scientist",
+    "companyId": "comp-quantum",
+    "companyName": "Quantum Analytics",
+    "location": "Makati, Metro Manila, Philippines",
+    "workArrangement": "On-site",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 110000,
+      "max": 150000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱110k – ₱150k/mo"
+    },
+    "category": "Data & AI",
+    "experienceLevel": "Senior",
+    "description": "Quantum Analytics is hiring a Data Scientist to build predictive analytics models, machine learning pipelines, and recommendation algorithms for enterprise client datasets.",
+    "responsibilities": [
+      "Develop statistical models and machine learning pipelines for predictive customer behavior",
+      "Process and analyze terabytes of structured and unstructured multi-source data",
+      "Deploy scalable ML models to production environments using Docker and Kubernetes",
+      "Collaborate with business intelligence leads to translate executive questions into data experiments",
+      "Present actionable quantitative findings to enterprise C-level stakeholders"
+    ],
+    "requirements": [
+      "4+ years of data science or machine learning engineering experience in production",
+      "Expertise in Python, pandas, scikit-learn, PyTorch/TensorFlow, and SQL",
+      "Experience with data warehousing (Snowflake, BigQuery) and ETL orchestration (Airflow)",
+      "Strong background in probability, linear algebra, and experimental design (A/B testing)",
+      "Degree in Computer Science, Statistics, Mathematics, or equivalent quantitative discipline"
+    ],
+    "benefits": [
+      "Top-tier compensation and quarterly profit-sharing bonuses",
+      "Premium on-site gourmet cafeteria and free barista coffee",
+      "Complete medical, dental, and optical insurance with zero employee copay",
+      "Sponsored attendance at NeurIPS, ICML, and Strata Data conferences",
+      "Relocation and transportation allowance for Metro Manila candidates"
+    ],
+    "tags": ["Python", "Machine Learning", "SQL", "Data Science", "PyTorch"],
+    "postedAt": "2026-08-24T10:00:00.000Z",
+    "postedTime": "1d ago",
+    "featured": true
+  },
+  {
+    "id": "job-004",
+    "title": "Backend Developer (Go)",
+    "companyId": "comp-globex",
+    "companyName": "Globex Corp",
+    "location": "Manila, Philippines",
+    "workArrangement": "Remote",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 95000,
+      "max": 140000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱95k – ₱140k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Mid-Level",
+    "description": "Globex Corp is looking for a Backend Developer specializing in Go (Golang) to develop high-throughput, low-latency microservices powering our international logistics tracking network.",
+    "responsibilities": [
+      "Design, build, and maintain high-performance REST and gRPC microservices in Go",
+      "Optimize PostgreSQL and Redis database queries for sub-millisecond execution times",
+      "Implement event-driven asynchronous architectures using Apache Kafka and RabbitMQ",
+      "Write comprehensive unit, integration, and load tests to guarantee 99.99% system availability",
+      "Participate in on-call incident triage and continuous observability improvements"
+    ],
+    "requirements": [
+      "3+ years of professional backend software engineering with at least 2 years in Golang",
+      "Demonstrated experience with distributed systems, concurrency models, and goroutines",
+      "Solid knowledge of relational database design, indexing strategies, and ACID transactions",
+      "Hands-on familiarity with Docker, Kubernetes, Prometheus, and Grafana",
+      "Strong problem-solving abilities and dedication to clean, idiomatic code"
+    ],
+    "benefits": [
+      "Full remote setup with flexible core working hours",
+      "Competitive USD-pegged salary protection against local currency inflation",
+      "Annual equipment upgrade allowance",
+      "Paid certifications (AWS, GCP, CKA) and learning stipends",
+      "20 days annual paid leave + generous parental leave"
+    ],
+    "tags": ["Go", "Golang", "Microservices", "Kafka", "PostgreSQL", "Remote"],
+    "postedAt": "2026-08-22T10:00:00.000Z",
+    "postedTime": "3d ago",
+    "featured": true
+  },
+  {
+    "id": "job-005",
+    "title": "Technical Project Manager",
+    "companyId": "comp-fintrust",
+    "companyName": "FinTrust Bank",
+    "location": "BGC, Taguig, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 120000,
+      "max": 180000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱120k – ₱180k/mo"
+    },
+    "category": "Product Management",
+    "experienceLevel": "Lead",
+    "description": "FinTrust Bank is looking for a Technical Project Manager to oversee critical digital banking modernization initiatives, regulatory compliance integrations, and multi-team release trains.",
+    "responsibilities": [
+      "Lead cross-functional agile squads through sprint planning, backlog grooming, and milestone delivery",
+      "Manage technical dependencies, risk mitigation strategies, and timeline roadmaps for payment gateway projects",
+      "Interface between executive banking stakeholders, compliance officers, and software engineering leads",
+      "Track and report project velocity, sprint burn-down metrics, and resource allocations",
+      "Champion agile best practices and foster a high-trust, continuous delivery engineering culture"
+    ],
+    "requirements": [
+      "5+ years of project or program management experience within tech companies or fintech institutions",
+      "Strong technical background (prior software development or technical architecture experience preferred)",
+      "PMP, PMI-ACP, or Scrum Master certification is an advantage",
+      "Experience navigating security, compliance, and regulatory governance (PCI-DSS, BSP frameworks)",
+      "Superb stakeholder management, negotiation, and written communication skills"
+    ],
+    "benefits": [
+      "Executive health package including executive checkup at St. Luke's Medical Center",
+      "Subsidized housing and vehicle loan programs for senior personnel",
+      "Performance-linked 14th to 16th month salary bonuses",
+      "Retirement fund matching plan",
+      "Modern headquarters in BGC with dedicated parking privilege"
+    ],
+    "tags": ["Agile", "Scrum", "Fintech", "Project Management", "Jira"],
+    "postedAt": "2026-08-25T15:30:00.000Z",
+    "postedTime": "Just now",
+    "featured": true
+  },
+  {
+    "id": "job-006",
+    "title": "UX Researcher",
+    "companyId": "comp-healthtech",
+    "companyName": "HealthTech Solutions",
+    "location": "Quezon City, Metro Manila, Philippines",
+    "workArrangement": "On-site",
+    "employmentType": "Contract",
+    "salary": {
+      "min": 70000,
+      "max": 90000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱70k – ₱90k/mo"
+    },
+    "category": "Design & Creative",
+    "experienceLevel": "Mid-Level",
+    "description": "HealthTech Solutions needs a passionate UX Researcher to lead generative and evaluative user studies with clinical physicians, nurses, and patients to improve telemedicine healthcare outcomes.",
+    "responsibilities": [
+      "Plan and execute qualitative and quantitative user research studies across clinical environments",
+      "Conduct in-depth interviews, contextual inquiries, and usability benchmarking tests",
+      "Synthesize research data into actionable user personas, empathy maps, and journey flows",
+      "Present user insights and evidence-based design recommendations to product teams",
+      "Maintain a centralized research repository to empower data-driven product decisions"
+    ],
+    "requirements": [
+      "3+ years conducting UX research for digital applications (healthcare/medtech experience is a huge plus)",
+      "Proficiency in user research tools (Dovetail, UserTesting, Maze, Optimal Workshop, Figma)",
+      "Deep understanding of ethical research protocols, patient confidentiality, and consent frameworks",
+      "Strong storytelling capabilities with visual presentations and executive summaries",
+      "Degree in HCI, Cognitive Psychology, Human Factors, Anthropology, or related field"
+    ],
+    "benefits": [
+      "Competitive contract rate with option to transition into permanent full-time employment",
+      "Direct opportunity to make a tangible positive impact on nationwide patient healthcare access",
+      "Comprehensive medical coverage and clinical health check benefits",
+      "Collaborative, mission-driven multidisciplinary medical & tech team",
+      "Flexible daytime hours with modern clinical research laboratory access"
+    ],
+    "tags": ["UX Research", "Usability Testing", "Healthcare", "Interviews", "Figma"],
+    "postedAt": "2026-08-18T10:00:00.000Z",
+    "postedTime": "1w ago",
+    "featured": true
+  },
+  {
+    "id": "job-007",
+    "title": "Full Stack Engineer (Node + React)",
+    "companyId": "comp-paymongo",
+    "companyName": "PayMongo",
+    "location": "Taguig, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 90000,
+      "max": 135000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱90k – ₱135k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Mid-Level",
+    "description": "Join PayMongo to build next-generation merchant checkout experiences, merchant analytics dashboards, and developer API SDKs used by tens of thousands of merchants across the Philippines.",
+    "responsibilities": [
+      "Build scalable REST APIs in Node.js and TypeScript connected to Postgres and Redis",
+      "Develop responsive, accessible merchant dashboard interfaces using React and Tailwind CSS",
+      "Integrate with national banking payment rails (InstaPay, PESONet, Maya, GCash)",
+      "Ensure adherence to PCI-DSS compliance and secure coding standards",
+      "Write thorough end-to-end integration tests and participate in sprint planning"
+    ],
+    "requirements": [
+      "3+ years experience with modern JavaScript / TypeScript across Node.js and React",
+      "Familiarity with SQL relational database schema design, indexing, and transactions",
+      "Experience building or integrating financial or third-party webhooks and APIs",
+      "Understanding of security fundamentals (OAuth2, CSRF, JWT, data sanitization)",
+      "Comfortable with Git workflows, code reviews, and CI/CD automated deployment"
+    ],
+    "benefits": [
+      "HMO from Day 1 with dependent coverage",
+      "Hybrid setup (2 days in BGC office)",
+      "Annual learning allowance and book purchases",
+      "Company-wide Friday catered lunches and social events",
+      "Stock option grants in a high-growth fintech startup"
+    ],
+    "tags": ["Node.js", "React", "TypeScript", "Fintech", "PostgreSQL", "Full-time"],
+    "postedAt": "2026-08-24T14:00:00.000Z",
+    "postedTime": "1d ago",
+    "featured": false
+  },
+  {
+    "id": "job-008",
+    "title": "Senior Database Reliability Engineer",
+    "companyId": "comp-supabase",
+    "companyName": "Supabase",
+    "location": "Manila, Philippines",
+    "workArrangement": "Remote",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 140000,
+      "max": 195000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱140k – ₱195k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Senior",
+    "description": "Supabase is looking for a Database Reliability Engineer to maintain, tune, and automate the fleet of millions of hosted Postgres instances running worldwide.",
+    "responsibilities": [
+      "Automate Postgres provisioning, backups, replication, failover, and disaster recovery",
+      "Optimize WAL archiving, connection pooling (PgBouncer/Supavisor), and query execution plans",
+      "Diagnose database bottlenecks, memory leaks, and disk I/O performance at scale",
+      "Contribute to open source database tools and Supabase core infrastructure",
+      "Participate in a global follow-the-sun on-call rotation"
+    ],
+    "requirements": [
+      "5+ years operating large-scale PostgreSQL production clusters in cloud environments",
+      "Deep understanding of Postgres internals, query planner, locking mechanisms, and extensions",
+      "Strong automation skills in Go, Rust, or Python alongside Linux system internals",
+      "Experience with Kubernetes, AWS/Fly.io/GCP, and Infrastructure as Code (Terraform)",
+      "Excellent async written documentation skills"
+    ],
+    "benefits": [
+      "Work from anywhere in the world with fully remote asynchronous culture",
+      "Top-tier compensation and equity grants",
+      "Unlimited paid time off with 4 weeks recommended minimum",
+      "Co-working stipend and annual equipment budget",
+      "All-expenses-paid global team retreat twice a year"
+    ],
+    "tags": ["PostgreSQL", "Database", "DevOps", "Linux", "Remote", "Go"],
+    "postedAt": "2026-08-21T08:00:00.000Z",
+    "postedTime": "4d ago",
+    "featured": false
+  },
+  {
+    "id": "job-009",
+    "title": "Senior Brand & Visual Designer",
+    "companyId": "comp-canva",
+    "companyName": "Canva",
+    "location": "Makati, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 85000,
+      "max": 115000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱85k – ₱115k/mo"
+    },
+    "category": "Design & Creative",
+    "experienceLevel": "Senior",
+    "description": "Canva is looking for an extraordinary Visual & Brand Designer to create visually stunning marketing campaigns, product launch assets, and design system illustrations.",
+    "responsibilities": [
+      "Craft compelling marketing creatives, landing page art direction, and digital campaigns",
+      "Produce vector iconography, 3D illustrations, and motion graphics for global launches",
+      "Collaborate with marketing managers and copywriters to define creative narrative",
+      "Maintain brand consistency across all digital touchpoints and global localized campaigns",
+      "Contribute innovative templates and creative assets to the Canva creator library"
+    ],
+    "requirements": [
+      "4+ years experience in brand design, advertising, or visual communication",
+      "Expert knowledge of Figma, Adobe Creative Suite (Illustrator, Photoshop, After Effects)",
+      "Strong typography, color theory, layout composition, and storytelling expertise",
+      "Experience creating motion design or animated vector assets is a big plus",
+      "Compelling visual portfolio showcasing branding and digital campaigns"
+    ],
+    "benefits": [
+      "Free daily breakfast, lunch, and barista coffee at the Manila hub",
+      "Comprehensive HMO with dependent coverage from start date",
+      "Annual wellness stipend and gym membership subsidy",
+      "Generous parental leave and flexible work arrangements",
+      "Employee stock purchase program (ESPP)"
+    ],
+    "tags": ["Figma", "Branding", "Illustration", "Motion Design", "Visual Design"],
+    "postedAt": "2026-08-20T09:00:00.000Z",
+    "postedTime": "5d ago",
+    "featured": false
+  },
+  {
+    "id": "job-010",
+    "title": "Machine Learning Engineer (Computer Vision)",
+    "companyId": "comp-grab",
+    "companyName": "Grab",
+    "location": "Pasig, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 115000,
+      "max": 160000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱115k – ₱160k/mo"
+    },
+    "category": "Data & AI",
+    "experienceLevel": "Senior",
+    "description": "Grab is hiring a Machine Learning Engineer to develop computer vision algorithms for merchant menu OCR extraction, driver face verification, and road safety intelligence.",
+    "responsibilities": [
+      "Train, fine-tune, and deploy deep learning models for image segmentation, OCR, and object detection",
+      "Optimize model inference latencies for mobile on-device and edge cloud deployment",
+      "Build automated dataset annotation, data augmentation, and model evaluation pipelines",
+      "Partner with mobile app engineers to integrate ML SDKs into iOS and Android client apps",
+      "Publish internal research reports and benchmark against state-of-the-art vision models"
+    ],
+    "requirements": [
+      "4+ years applied experience in computer vision, deep learning, or machine learning systems",
+      "Proficiency with PyTorch or TensorFlow, OpenCV, Python, and CUDA acceleration",
+      "Experience quantizing models (TensorRT, ONNX, TFLite) for low-latency inference",
+      "Strong software engineering foundation with clean code, testing, and CI/CD pipelines",
+      "Master's or Bachelor's degree in Computer Science, Artificial Intelligence, or related field"
+    ],
+    "benefits": [
+      "Grab corporate ride & food monthly credits",
+      "Top-tier HMO for employee and family dependents",
+      "Competitive annual bonus scheme based on performance",
+      "Continuous professional training and cloud compute credits (AWS/GCP)",
+      "Hybrid flexible arrangement with state-of-the-art tech hub in Ortigas"
+    ],
+    "tags": ["Computer Vision", "PyTorch", "Python", "Deep Learning", "Machine Learning"],
+    "postedAt": "2026-08-23T16:00:00.000Z",
+    "postedTime": "2d ago",
+    "featured": false
+  },
+  {
+    "id": "job-011",
+    "title": "Lead Product Manager (Growth)",
+    "companyId": "comp-paymongo",
+    "companyName": "PayMongo",
+    "location": "Taguig, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 130000,
+      "max": 185000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱130k – ₱185k/mo"
+    },
+    "category": "Product Management",
+    "experienceLevel": "Lead",
+    "description": "Lead the Growth Product squad at PayMongo to optimize self-serve merchant onboarding, conversion funnels, and enterprise checkout adoption across the Philippines.",
+    "responsibilities": [
+      "Define growth strategy, product vision, and OKRs for merchant acquisition and activation",
+      "Design and execute rapid A/B experiments across landing pages, signup flows, and KYC onboarding",
+      "Analyze behavioral funnel metrics using Amplitude, Mixpanel, and SQL queries",
+      "Collaborate with engineering leads, product designers, and growth marketers",
+      "Present quarterly performance updates to executive leadership"
+    ],
+    "requirements": [
+      "5+ years product management experience with a proven track record of driving user growth in SaaS/fintech",
+      "Data-fluent with strong SQL capabilities and rigorous experimentation methodology",
+      "Strong customer empathy and technical understanding of web architecture and APIs",
+      "Proven leadership skills managing agile scrum teams and mentoring junior PMs",
+      "Exceptional written and oral communication skills"
+    ],
+    "benefits": [
+      "High equity participation in a premier Southeast Asian fintech scale-up",
+      "Comprehensive HMO with dependent coverage",
+      "Flexible hybrid working environment",
+      "Executive coaching and professional leadership development programs",
+      "Tech reimbursement and wellness perks"
+    ],
+    "tags": ["Product Management", "Growth", "A/B Testing", "Fintech", "Analytics"],
+    "postedAt": "2026-08-24T12:00:00.000Z",
+    "postedTime": "1d ago",
+    "featured": false
+  },
+  {
+    "id": "job-012",
+    "title": "DevOps & Cloud Security Architect",
+    "companyId": "comp-acme",
+    "companyName": "Acme Technologies",
+    "location": "Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 110000,
+      "max": 155000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱110k – ₱155k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Senior",
+    "description": "Acme Technologies is seeking a Cloud Security Architect to design, harden, and automate multi-region AWS and GCP cloud infrastructure while ensuring SOC2 and ISO27001 compliance.",
+    "responsibilities": [
+      "Architect secure multi-tenant cloud infrastructure using Terraform and AWS CDK",
+      "Implement automated vulnerability scanning, container security (Trivy/Falco), and secret management",
+      "Maintain CI/CD pipelines with GitHub Actions and automated security gates",
+      "Conduct regular penetration testing and security architecture reviews for microservices",
+      "Lead incident response and disaster recovery simulation drills"
+    ],
+    "requirements": [
+      "5+ years experience in Cloud Infrastructure, DevOps, and Information Security",
+      "AWS Certified Solutions Architect or Security Specialty certification preferred",
+      "Extensive experience with Kubernetes, Docker, Terraform, and Linux administration",
+      "Knowledge of identity management (IAM, OAuth, SAML, Zero Trust)",
+      "Strong scripting abilities in Python, Bash, or Go"
+    ],
+    "benefits": [
+      "Premium HMO with full coverage for spouse and children",
+      "Certification sponsorship and annual technical training budget",
+      "₱40,000 yearly wellness and gym allowance",
+      "Generous annual bonus and stock grants",
+      "Flexible hybrid work mode"
+    ],
+    "tags": ["DevOps", "AWS", "Kubernetes", "Security", "Terraform"],
+    "postedAt": "2026-08-21T14:00:00.000Z",
+    "postedTime": "4d ago",
+    "featured": false
+  },
+  {
+    "id": "job-013",
+    "title": "Junior Frontend Developer (React)",
+    "companyId": "comp-acme",
+    "companyName": "Acme Technologies",
+    "location": "Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 45000,
+      "max": 65000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱45k – ₱65k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Junior",
+    "description": "Start your software engineering career with Acme Technologies! You will work alongside senior developers to build responsive web pages, interactive widgets, and test suites.",
+    "responsibilities": [
+      "Implement UI components from Figma design specs using React and Tailwind CSS",
+      "Write unit tests and component tests using Vitest and React Testing Library",
+      "Debug browser compatibility issues and improve page load responsiveness",
+      "Participate actively in daily standups, sprint reviews, and technical workshops",
+      "Refactor legacy JavaScript code to clean, typed TypeScript modules"
+    ],
+    "requirements": [
+      "1-2 years of personal, internship, or professional web development experience",
+      "Solid foundation in HTML5, modern CSS, JavaScript (ES6+), and React",
+      "Familiarity with Git version control and pull request workflows",
+      "Eager to learn modern web standards, state management, and testing practices",
+      "Bachelor's degree in CS/IT or impressive portfolio of self-built web applications"
+    ],
+    "benefits": [
+      "Structured 1-on-1 mentorship program with Senior Engineers",
+      "Comprehensive medical insurance from Day 1",
+      "Company laptop and home office peripherals provided",
+      "Paid study leave and continuous learning access (Frontend Masters, Udemy)",
+      "Friendly, collaborative team culture with regular gaming nights"
+    ],
+    "tags": ["React", "JavaScript", "TypeScript", "HTML/CSS", "Junior"],
+    "postedAt": "2026-08-25T08:00:00.000Z",
+    "postedTime": "8h ago",
+    "featured": false
+  },
+  {
+    "id": "job-014",
+    "title": "Data Analyst (Marketing & Revenue)",
+    "companyId": "comp-grab",
+    "companyName": "Grab",
+    "location": "Pasig, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 60000,
+      "max": 85000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱60k – ₱85k/mo"
+    },
+    "category": "Data & AI",
+    "experienceLevel": "Mid-Level",
+    "description": "Grab is looking for a Data Analyst to extract business intelligence, create executive dashboards, and analyze campaign ROI for our regional food and transport verticals.",
+    "responsibilities": [
+      "Write complex SQL queries across BigQuery datasets to analyze merchant and consumer metrics",
+      "Build real-time Tableau and PowerBI dashboards for executive business reviews",
+      "Evaluate promotional campaigns, voucher elasticities, and customer lifetime value",
+      "Conduct cohort analysis to identify driver retention trends and churn drivers",
+      "Collaborate with commercial managers to recommend revenue optimization strategies"
+    ],
+    "requirements": [
+      "2-4 years experience in data analytics, business intelligence, or quantitative analysis",
+      "High proficiency in SQL and data visualization tools (Tableau, Looker, Power BI)",
+      "Basic Python/R scripting skills for data manipulation and statistical testing",
+      "Strong analytical mindset with ability to translate complex data into executive stories",
+      "Degree in Economics, Statistics, Business Analytics, or Computer Science"
+    ],
+    "benefits": [
+      "Monthly GrabPay credits for food delivery and rides",
+      "Full HMO coverage with dependent subsidy",
+      "Annual performance bonus and career progression paths",
+      "Comprehensive training programs in advanced analytics and AI tools",
+      "Collaborative and diverse regional team"
+    ],
+    "tags": ["SQL", "Tableau", "Data Analysis", "BigQuery", "Analytics"],
+    "postedAt": "2026-08-24T09:00:00.000Z",
+    "postedTime": "1d ago",
+    "featured": false
+  },
+  {
+    "id": "job-015",
+    "title": "Senior Financial Risk Analyst",
+    "companyId": "comp-fintrust",
+    "companyName": "FinTrust Bank",
+    "location": "BGC, Taguig, Philippines",
+    "workArrangement": "On-site",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 95000,
+      "max": 130000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱95k – ₱130k/mo"
+    },
+    "category": "Finance & Banking",
+    "experienceLevel": "Senior",
+    "description": "FinTrust Bank is looking for a Senior Financial Risk Analyst to monitor credit exposure, model liquidity scenarios, and ensure compliance with BSP financial guidelines.",
+    "responsibilities": [
+      "Develop risk assessment models for consumer loan underwriting and credit portfolio scoring",
+      "Perform stress testing, VaR calculations, and liquidity risk simulations",
+      "Prepare regulatory risk reports for the Central Bank and internal audit committees",
+      "Evaluate algorithmic fraud detection models and recommend threshold adjustments",
+      "Partner with data science to implement automated credit approval workflows"
+    ],
+    "requirements": [
+      "4+ years experience in credit risk modeling, banking analytics, or financial audit",
+      "Strong knowledge of Basel III/IV frameworks, IFRS 9, and local BSP regulations",
+      "Proficiency with Excel modeling, SQL, and financial risk software (SAS/R)",
+      "CFA, FRM, or relevant professional certification is a strong advantage",
+      "Bachelor's degree in Finance, Actuarial Science, or Quantitative Economics"
+    ],
+    "benefits": [
+      "Banking industry benefits: 14th & 15th month guaranteed pay",
+      "Low-interest employee mortgage and auto loans",
+      "Comprehensive health coverage with free executive health checkup",
+      "Retirement fund with company matching",
+      "BGC head office with modern amenities"
+    ],
+    "tags": ["Finance", "Risk Management", "Banking", "Credit Risk", "SQL"],
+    "postedAt": "2026-08-23T11:00:00.000Z",
+    "postedTime": "2d ago",
+    "featured": false
+  },
+  {
+    "id": "job-016",
+    "title": "Software Engineering Intern (Summer 2026)",
+    "companyId": "comp-vercel",
+    "companyName": "Vercel",
+    "location": "Manila, Philippines",
+    "workArrangement": "Remote",
+    "employmentType": "Internship",
+    "salary": {
+      "min": 30000,
+      "max": 40000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱30k – ₱40k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Internship",
+    "description": "Join Vercel as a Software Engineering Intern! Work directly with open source core maintainers building Next.js, v0, and the Vercel platform.",
+    "responsibilities": [
+      "Contribute bug fixes, performance improvements, and documentation to developer tools",
+      "Build demo applications showcasing modern Next.js App Router and React Server Components",
+      "Collaborate with senior engineers during code reviews and weekly technical demos",
+      "Participate in intern hackathons and build end-to-end cloud projects"
+    ],
+    "requirements": [
+      "Currently pursuing a degree in Computer Science, Software Engineering, or self-taught builder",
+      "Proficient with JavaScript, TypeScript, and React",
+      "Active GitHub profile with personal projects or open source contributions",
+      "Passion for developer experience, web performance, and modern frontend tools",
+      "Available for a 3 to 6 month full-time or part-time internship"
+    ],
+    "benefits": [
+      "High internship monthly stipend (₱30k-₱40k/month)",
+      "Fully remote with home office equipment allowance",
+      "1-on-1 mentorship from world-class senior engineers",
+      "Fast-track conversion to full-time junior engineer upon graduation",
+      "Vercel company swag kit"
+    ],
+    "tags": ["React", "TypeScript", "Next.js", "Internship", "Remote"],
+    "postedAt": "2026-08-25T07:00:00.000Z",
+    "postedTime": "9h ago",
+    "featured": false
+  },
+  {
+    "id": "job-017",
+    "title": "Performance Marketing Manager",
+    "companyId": "comp-healthtech",
+    "companyName": "HealthTech Solutions",
+    "location": "Quezon City, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 75000,
+      "max": 105000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱75k – ₱105k/mo"
+    },
+    "category": "Marketing & Growth",
+    "experienceLevel": "Mid-Level",
+    "description": "HealthTech Solutions is hiring a Performance Marketing Manager to run paid digital user acquisition campaigns (Google Ads, Meta Ads, TikTok) for our telemedicine consultation app.",
+    "responsibilities": [
+      "Manage and optimize 7-figure monthly digital ad budgets across search, social, and display channels",
+      "Run iterative creative A/B testing on ad copy, video hooks, and landing page conversions",
+      "Track CAC, ROAS, LTV, and conversion attribution using Google Analytics 4 and AppsFlyer",
+      "Collaborate with video editors and graphic designers to generate high-converting ad assets",
+      "Analyze weekly performance reports and scale winning campaign structures"
+    ],
+    "requirements": [
+      "3+ years managing paid acquisition campaigns in mobile apps, SaaS, or healthcare services",
+      "Proven track record scaling Google Ads (Search, PMax) and Meta Ads Manager profitably",
+      "Strong analytical skills with Google Sheets/Excel modeling and data attribution understanding",
+      "Familiarity with App Store Optimization (ASO) and mobile attribution partners",
+      "Creative mindset with an understanding of consumer psychology"
+    ],
+    "benefits": [
+      "Performance-based bonuses tied directly to acquisition milestones",
+      "Comprehensive HMO with family benefits",
+      "Hybrid setup (3 days remote, 2 days office)",
+      "Annual marketing conference pass and education fund",
+      "Wellness allowance and health product discounts"
+    ],
+    "tags": ["Marketing", "Google Ads", "Meta Ads", "Growth", "Analytics"],
+    "postedAt": "2026-08-22T13:00:00.000Z",
+    "postedTime": "3d ago",
+    "featured": false
+  },
+  {
+    "id": "job-018",
+    "title": "Senior Mobile Engineer (React Native)",
+    "companyId": "comp-globex",
+    "companyName": "Globex Corp",
+    "location": "Pasig, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 100000,
+      "max": 145000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱100k – ₱145k/mo"
+    },
+    "category": "Engineering",
+    "experienceLevel": "Senior",
+    "description": "Globex Corp is hiring a Senior Mobile Engineer to build our offline-first cross-platform driver and fleet tracking mobile application for iOS and Android.",
+    "responsibilities": [
+      "Architect and build cross-platform mobile apps with React Native, TypeScript, and Expo",
+      "Implement real-time background geolocation tracking, BLE hardware connectivity, and offline SQLite sync",
+      "Optimize memory usage, 60fps animations, and battery efficiency for field devices",
+      "Manage App Store and Google Play release pipelines with Fastlane and EAS",
+      "Mentor mobile developers and establish automated mobile E2E testing with Maestro/Detox"
+    ],
+    "requirements": [
+      "4+ years of production experience in React Native and mobile app development",
+      "Experience writing native iOS (Swift/Obj-C) or Android (Kotlin/Java) bridge modules",
+      "Deep understanding of mobile architecture, state management (Zustand/Redux), and offline caching",
+      "Familiarity with location services, push notifications, and biometric authentication",
+      "Published apps on the Apple App Store and Google Play Store"
+    ],
+    "benefits": [
+      "Modern test device kit provided (latest iPhone and Pixel flagships)",
+      "Comprehensive medical and dental insurance from Day 1",
+      "Hybrid working model with flexible start times",
+      "Generous annual bonus and stock options",
+      "15 days VL + 10 days SL with unused leave encashment"
+    ],
+    "tags": ["React Native", "Mobile", "TypeScript", "iOS", "Android"],
+    "postedAt": "2026-08-20T15:00:00.000Z",
+    "postedTime": "5d ago",
+    "featured": false
+  },
+  {
+    "id": "job-019",
+    "title": "Enterprise Account Executive (Fintech)",
+    "companyId": "comp-paymongo",
+    "companyName": "PayMongo",
+    "location": "Taguig, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 90000,
+      "max": 140000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱90k – ₱140k/mo"
+    },
+    "category": "Finance & Banking",
+    "experienceLevel": "Senior",
+    "description": "Drive high-value enterprise payment partnerships with top e-commerce brands, conglomerates, and multinational retailers expanding across the Philippines.",
+    "responsibilities": [
+      "Own full-cycle enterprise sales from outbound prospecting, solution discovery, and contract closing",
+      "Deliver tailored payment gateway presentations and technical proposals to C-level executives",
+      "Partner with solutions engineers to structure custom pricing and API integration roadmaps",
+      "Maintain accurate CRM pipeline forecasting in HubSpot/Salesforce",
+      "Consistently exceed quarterly quota targets"
+    ],
+    "requirements": [
+      "4+ years of quota-carrying B2B SaaS, enterprise software, or fintech sales experience",
+      "Demonstrated track record of closing high six-figure enterprise contracts",
+      "Deep understanding of payments, merchant acquiring, and retail technology landscapes",
+      "Strong executive presence, consultative negotiation skills, and persistence",
+      "Bachelor's degree in Business, Marketing, Communications, or related field"
+    ],
+    "benefits": [
+      "Uncapped commission structure with lucrative accelerators",
+      "Company car or mobility allowance",
+      "Comprehensive HMO with dependent coverage",
+      "Corporate entertainment and client dinner budget",
+      "High-profile networking with retail and tech industry leaders"
+    ],
+    "tags": ["Sales", "Fintech", "Enterprise", "B2B", "Negotiation"],
+    "postedAt": "2026-08-23T08:00:00.000Z",
+    "postedTime": "2d ago",
+    "featured": false
+  },
+  {
+    "id": "job-020",
+    "title": "AI Research Scientist (LLMs & Agents)",
+    "companyId": "comp-quantum",
+    "companyName": "Quantum Analytics",
+    "location": "Makati, Metro Manila, Philippines",
+    "workArrangement": "Hybrid",
+    "employmentType": "Full-time",
+    "salary": {
+      "min": 135000,
+      "max": 190000,
+      "currency": "PHP",
+      "period": "mo",
+      "formatted": "₱135k – ₱190k/mo"
+    },
+    "category": "Data & AI",
+    "experienceLevel": "Senior",
+    "description": "Quantum Analytics is looking for an AI Research Scientist to conduct novel research in autonomous agentic workflows, RAG reasoning architectures, and domain-specific LLM fine-tuning.",
+    "responsibilities": [
+      "Design and train specialized transformer architectures and LoRA/PEFT fine-tuning models",
+      "Develop multi-agent collaboration frameworks with tool use and self-critique capabilities",
+      "Evaluate inference latency, safety guardrails, and hallucination reduction mechanisms",
+      "Collaborate with software engineers to deploy production-grade inference endpoints on GPU clusters",
+      "Author whitepapers and represent Quantum Analytics at premier AI symposiums"
+    ],
+    "requirements": [
+      "PhD or Master's degree in Computer Science, AI, or Mathematics with relevant publications",
+      "3+ years experience training and deploying LLMs, transformer models, and embedding spaces",
+      "Expert knowledge of PyTorch, vLLM, HuggingFace transformers, LangGraph, and Triton",
+      "Experience optimizing multi-GPU distributed training (DeepSpeed, FSDP)",
+      "Strong mathematical rigor in optimization, attention mechanisms, and information retrieval"
+    ],
+    "benefits": [
+      "Access to dedicated H100 and A100 GPU compute clusters",
+      "Top-tier compensation and equity grants",
+      "Full medical coverage for employee and dependents",
+      "Unlimited research conference travel budget",
+      "Flexible hybrid working schedule in Makati"
+    ],
+    "tags": ["AI", "LLM", "PyTorch", "Deep Learning", "Transformers", "NLP"],
+    "postedAt": "2026-08-25T13:00:00.000Z",
+    "postedTime": "3h ago",
+    "featured": false
+  }
+]

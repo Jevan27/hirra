@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cat-engineering",
+    "name": "Engineering",
+    "slug": "engineering",
+    "icon": "Code2",
+    "jobCount": 12
+  },
+  {
+    "id": "cat-design",
+    "name": "Design & Creative",
+    "slug": "design",
+    "icon": "Palette",
+    "jobCount": 6
+  },
+  {
+    "id": "cat-product",
+    "name": "Product Management",
+    "slug": "product",
+    "icon": "Layers",
+    "jobCount": 4
+  },
+  {
+    "id": "cat-data",
+    "name": "Data & AI",
+    "slug": "data-ai",
+    "icon": "Database",
+    "jobCount": 5
+  },
+  {
+    "id": "cat-marketing",
+    "name": "Marketing & Growth",
+    "slug": "marketing",
+    "icon": "TrendingUp",
+    "jobCount": 3
+  },
+  {
+    "id": "cat-finance",
+    "name": "Finance & Banking",
+    "slug": "finance",
+    "icon": "Banknote",
+    "jobCount": 4
+  }
+]
