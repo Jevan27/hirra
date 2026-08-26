@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight, BadgeCheck, MapPin } from 'lucide-react';
-import { COMPANY_PROFILE_OPEN_JOBS, NORTHSTAR_COMPANY } from '@/data/mockEmployers';
+import { COMPANY_PROFILE_OPEN_JOBS, HIRRA_COMPANY } from '@/data/mockEmployers';
 import { StarRating } from '@/components/ui/StarRating';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -51,13 +51,13 @@ export const CompanyProfilePlaceholder: React.FC<CompanyProfilePlaceholderProps>
 
       <div className="px-4 sm:px-5 pb-5">
         {/* Logo + identity */}
-        <div className="flex items-end gap-3 -mt-7 mb-3">
+        <div className="flex items-end gap-3 pt-4 mb-3">
           <span className="w-14 h-14 rounded-2xl bg-indigo-600 text-white text-xl font-extrabold flex items-center justify-center ring-4 ring-white shadow-md dark:ring-slate-900 shrink-0">
-            N
+            H
           </span>
           <div className="pb-0.5 min-w-0">
             <p className="flex items-center gap-1.5 text-base sm:text-lg font-extrabold text-slate-900 truncate dark:text-white">
-              {NORTHSTAR_COMPANY.name}
+              {HIRRA_COMPANY.name}
               <BadgeCheck size={16} className="shrink-0 text-indigo-500 dark:text-indigo-400" />
             </p>
           </div>
@@ -68,7 +68,7 @@ export const CompanyProfilePlaceholder: React.FC<CompanyProfilePlaceholderProps>
 
         <p className="flex items-center gap-1.5 text-xs text-slate-500 mb-2.5 dark:text-slate-400">
           <MapPin size={12} />
-          {NORTHSTAR_COMPANY.industry} · {NORTHSTAR_COMPANY.location}
+          {HIRRA_COMPANY.industry} · {HIRRA_COMPANY.location}
         </p>
 
         {/* Rating row */}

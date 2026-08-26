@@ -167,8 +167,8 @@ export const STARTUP_STORY_LINES = [
   "You might be opening your business and looking for people who believe in what you're building.",
 ];
 
-export const NORTHSTAR_COMPANY = {
-  name: 'Northstar Technologies',
+export const HIRRA_COMPANY = {
+  name: 'Hirra',
   industry: 'Software & Technology',
   location: 'Manila, Philippines',
   quote: 'Building tools for the next generation of businesses.',
@@ -176,7 +176,7 @@ export const NORTHSTAR_COMPANY = {
   openRoles: 3,
   founded: 'Founded 2023',
   about:
-    'Northstar Technologies is a growing software company helping businesses modernize how they operate. The team is hiring across engineering, design, and marketing as they expand across Southeast Asia.',
+    'Hirra is a growing software company helping businesses modernize how they operate. The team is hiring across engineering, design, and marketing as they expand across Southeast Asia.',
 };
 
 export const HOW_IT_WORKS_STEPS = [
@@ -283,7 +283,7 @@ export const TESTIMONIALS = [
       "As a small team, we can't compete on brand recognition. A real company profile helped candidates see who we are.",
     name: 'Jasmine Cruz',
     role: 'People & Culture',
-    company: 'Northstar Technologies',
+    company: 'Hirra',
     initials: 'JC',
   },
 ];

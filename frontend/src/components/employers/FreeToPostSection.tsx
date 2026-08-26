@@ -11,9 +11,6 @@ export const FreeToPostSection: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Copy + checklist */}
           <Reveal>
-            <Badge variant="hybrid" className="mb-4">
-              $0 Job Posting
-            </Badge>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4 dark:text-white">
               Post Your Jobs. It's Free.
             </h2>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Reveal } from '@/components/common/Reveal';
 import { CulturePlaceholder } from './placeholders/CulturePlaceholder';
-import { NORTHSTAR_COMPANY, STARTUP_STORY_LINES } from '@/data/mockEmployers';
+import { HIRRA_COMPANY, STARTUP_STORY_LINES } from '@/data/mockEmployers';
 import { startHiring } from '@/lib/employerCta';
 
 export const StartupsSection: React.FC = () => {
@@ -94,7 +94,7 @@ export const StartupsSection: React.FC = () => {
               <div className="flex items-center">
                 <div className="w-full rounded-2xl overflow-hidden border border-white/10 bg-slate-900/70 backdrop-blur shadow-2xl">
                   <CulturePlaceholder
-                    companyName={NORTHSTAR_COMPANY.name}
+                    companyName={HIRRA_COMPANY.name}
                     onDark
                     className="!rounded-none border-0 border-b border-white/10 !min-h-[200px] sm:!min-h-[230px]"
                   />
@@ -103,14 +103,14 @@ export const StartupsSection: React.FC = () => {
                     {/* Identity */}
                     <div className="flex items-center gap-3 mb-3">
                       <span className="w-11 h-11 rounded-xl bg-indigo-500 text-white text-base font-extrabold flex items-center justify-center shrink-0">
-                        N
+                        H
                       </span>
                       <div className="min-w-0">
                         <p className="font-extrabold text-white truncate">
-                          {NORTHSTAR_COMPANY.name}
+                          {HIRRA_COMPANY.name}
                         </p>
                         <p className="text-xs text-slate-400 truncate">
-                          {NORTHSTAR_COMPANY.industry} · {NORTHSTAR_COMPANY.location}
+                          {HIRRA_COMPANY.industry} · {HIRRA_COMPANY.location}
                         </p>
                       </div>
                       <Badge
@@ -122,18 +122,18 @@ export const StartupsSection: React.FC = () => {
                     </div>
 
                     <blockquote className="border-l-2 border-indigo-500 pl-3.5 text-sm italic text-slate-300 leading-relaxed mb-5">
-                      "{NORTHSTAR_COMPANY.quote}"
+                      "{HIRRA_COMPANY.quote}"
                     </blockquote>
 
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-2.5">
                       {[
-                        { icon: Users, label: NORTHSTAR_COMPANY.employees },
+                        { icon: Users, label: HIRRA_COMPANY.employees },
                         {
                           icon: BriefcaseBusiness,
-                          label: `${NORTHSTAR_COMPANY.openRoles} open roles`,
+                          label: `${HIRRA_COMPANY.openRoles} open roles`,
                         },
-                        { icon: CalendarCheck, label: NORTHSTAR_COMPANY.founded },
+                        { icon: CalendarCheck, label: HIRRA_COMPANY.founded },
                       ].map((stat) => (
                         <div
                           key={stat.label}
