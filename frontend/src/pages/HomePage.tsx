@@ -29,11 +29,13 @@ export const HomePage: React.FC = () => {
   } = useJobs(searchParams ? { q: searchParams.q, location: searchParams.location } : undefined);
 
   const handleHeroSearch = (query: string, location: string) => {
-    if (!query && (!location || location === 'Manila, Philippines')) {
+    const trimmedQ = query.trim();
+    const trimmedLoc = location.trim();
+    if (!trimmedQ && !trimmedLoc) {
       setSearchParams(null);
       return;
     }
-    setSearchParams({ q: query, location });
+    setSearchParams({ q: trimmedQ, location: trimmedLoc });
   };
 
   const handleResetSearch = () => {
@@ -50,28 +52,31 @@ export const HomePage: React.FC = () => {
   return (
     <>
       {/* Hero Section with Reference Design Background Blobs & Dots */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
+      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 z-20">
 
-        {/* Seamless Theme-Aware Ambient Radial Glow Layer */}
-        <div className="hero-ambient-glow" />
+        {/* Self-contained ambient background layer to prevent horizontal overflow without clipping dropdowns */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          {/* Seamless Theme-Aware Ambient Radial Glow Layer */}
+          <div className="hero-ambient-glow" />
 
-        {/* Top-Right Oversized Ambient Blurred Orb (Zero Hard Seams) */}
-        <div
-          aria-hidden="true"
-          className="absolute -top-40 -right-40 sm:-top-52 sm:-right-52 w-[600px] sm:w-[800px] lg:w-[900px] h-[600px] sm:h-[800px] lg:h-[900px] rounded-full bg-gradient-to-bl from-indigo-200/40 via-purple-200/20 to-transparent blur-[100px] sm:blur-[140px] pointer-events-none z-0 dark:from-indigo-600/18 dark:via-purple-800/10 dark:to-transparent"
-        />
+          {/* Top-Right Oversized Ambient Blurred Orb */}
+          <div
+            aria-hidden="true"
+            className="absolute -top-40 -right-40 sm:-top-52 sm:-right-52 w-[600px] sm:w-[800px] lg:w-[900px] h-[600px] sm:h-[800px] lg:h-[900px] rounded-full bg-gradient-to-bl from-indigo-200/40 via-purple-200/20 to-transparent blur-[100px] sm:blur-[140px] dark:from-indigo-600/18 dark:via-purple-800/10 dark:to-transparent"
+          />
 
-        {/* Top-Left 6x6 Dot Matrix Grid */}
-        <div className="absolute top-12 left-6 sm:left-12 lg:left-20 pointer-events-none hidden md:block select-none z-0">
-          <svg width="110" height="110" viewBox="0 0 110 110" fill="none" className="opacity-75 dark:opacity-25">
-            <pattern id="hirra-dots" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
-              <circle cx="3" cy="3" r="2" className="fill-indigo-400 dark:fill-indigo-300" />
-            </pattern>
-            <rect width="110" height="110" fill="url(#hirra-dots)" />
-          </svg>
+          {/* Top-Left 6x6 Dot Matrix Grid */}
+          <div className="absolute top-12 left-6 sm:left-12 lg:left-20 hidden md:block select-none">
+            <svg width="110" height="110" viewBox="0 0 110 110" fill="none" className="opacity-75 dark:opacity-25">
+              <pattern id="hirra-dots" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+                <circle cx="3" cy="3" r="2" className="fill-indigo-400 dark:fill-indigo-300" />
+              </pattern>
+              <rect width="110" height="110" fill="url(#hirra-dots)" />
+            </svg>
+          </div>
         </div>
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
 
           {/* Main Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-4 anim-fade-up dark:text-white">
@@ -83,15 +88,15 @@ export const HomePage: React.FC = () => {
             Search thousands of opportunities from companies looking for their next great hire.
           </p>
 
-          {/* Large Search Component */}
-          <div className="anim-fade-up anim-delay-2">
+          {/* Large Search Component with High Stacking Context */}
+          <div className="anim-fade-up anim-delay-2 relative z-30">
             <JobSearch onSearch={handleHeroSearch} showPopularTags={true} />
           </div>
         </div>
       </section>
 
       {/* Featured Opportunities Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 anim-fade-up anim-delay-3">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 anim-fade-up anim-delay-3 relative z-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-white">

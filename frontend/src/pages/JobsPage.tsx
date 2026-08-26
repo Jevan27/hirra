@@ -53,7 +53,7 @@ export const JobsPage: React.FC = () => {
           <JobSearch
             onSearch={handleSearch}
             initialQuery={query}
-            initialLocation={location || 'Manila, Philippines'}
+            initialLocation={location}
             showPopularTags={false}
           />
         </div>

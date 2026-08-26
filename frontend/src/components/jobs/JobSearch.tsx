@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Search, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LocationAutocomplete } from './LocationAutocomplete';
 import { POPULAR_SEARCH_TAGS } from '@/lib/constants';
 
 interface JobSearchProps {
@@ -13,11 +14,20 @@ interface JobSearchProps {
 export const JobSearch: React.FC<JobSearchProps> = ({
   onSearch,
   initialQuery = '',
-  initialLocation = 'Manila, Philippines',
+  initialLocation = '',
   showPopularTags = true,
 }) => {
   const [query, setQuery] = useState(initialQuery);
   const [location, setLocation] = useState(initialLocation);
+
+  // Sync state if initial props change
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
+  useEffect(() => {
+    setLocation(initialLocation);
+  }, [initialLocation]);
 
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -38,6 +48,7 @@ export const JobSearch: React.FC<JobSearchProps> = ({
       {/* Main Large Search Card from Reference */}
       <form
         onSubmit={handleSearch}
+        autoComplete="off"
         className="bg-white rounded-2xl p-2.5 sm:p-3 shadow-search border border-slate-100/90 flex flex-col md:flex-row items-center gap-3 anim-focus-ring anim-transition-shadow focus-within:ring-2 focus-within:ring-indigo-500/30 dark:bg-slate-900 dark:border-slate-800"
       >
         {/* Keyword Input */}
@@ -45,6 +56,10 @@ export const JobSearch: React.FC<JobSearchProps> = ({
           <Search size={21} className="text-indigo-600 dark:text-indigo-400 shrink-0" />
           <input
             type="text"
+            name="hirra_job_keyword"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Job title, keyword, or company"
@@ -55,17 +70,15 @@ export const JobSearch: React.FC<JobSearchProps> = ({
         {/* Divider */}
         <div className="hidden md:block w-px h-8 bg-slate-200 dark:bg-slate-700" />
 
-        {/* Location Input */}
-        <div className="flex-1 w-full flex items-center gap-3.5 px-4 py-2 sm:py-2.5">
-          <MapPin size={21} className="text-indigo-600 dark:text-indigo-400 shrink-0" />
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Location or Remote"
-            className="w-full text-sm sm:text-base font-medium text-slate-800 placeholder:text-slate-400 bg-transparent focus:outline-none dark:text-slate-100 dark:placeholder:text-slate-500"
-          />
-        </div>
+        {/* Mapbox Location Autocomplete Input */}
+        <LocationAutocomplete
+          value={location}
+          onChange={setLocation}
+          onSelect={(selectedLoc) => {
+            setLocation(selectedLoc);
+          }}
+          placeholder="Location or Remote"
+        />
 
         {/* Search Jobs Button */}
         <Button

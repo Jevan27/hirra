@@ -1,15 +1,24 @@
 import express from 'express';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { corsMiddleware } from './middleware/corsConfig.js';
-import { apiRateLimiter } from './middleware/rateLimiter.js';
+import { apiRateLimiter, locationRateLimiter } from './middleware/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFound } from './middleware/notFound.js';
 import jobsRouter from './routes/jobs.js';
 import companiesRouter from './routes/companies.js';
 import categoriesRouter from './routes/categories.js';
+import locationRouter from './routes/location.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables reliably from backend/.env and workspace root .env
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config(); // fallback to default cwd
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,7 +31,7 @@ app.use(helmet({
 // CORS Configuration
 app.use(corsMiddleware);
 
-// Rate Limiting
+// Global Rate Limiting
 app.use('/api', apiRateLimiter);
 
 // Body Parser
@@ -52,6 +61,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/jobs', jobsRouter);
 app.use('/api/companies', companiesRouter);
 app.use('/api/categories', categoriesRouter);
+app.use('/api/location', locationRateLimiter, locationRouter);
 
 // Catch-all 404 handler
 app.use(notFound);
@@ -65,6 +75,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`🚀 Hirra API Server is running securely on http://localhost:${PORT}`);
     console.log(`📡 Health Check: http://localhost:${PORT}/api/health`);
     console.log(`💼 Jobs API: http://localhost:${PORT}/api/jobs`);
+    console.log(`📍 Location API: http://localhost:${PORT}/api/location/autocomplete`);
   });
 }
 

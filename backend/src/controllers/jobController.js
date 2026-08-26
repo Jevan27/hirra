@@ -1,5 +1,12 @@
 import { jobService } from '../services/jobService.js';
 
+// Safe sanitization helper for pagination
+const sanitizePagination = (page, limit) => {
+  const parsedPage = Math.max(1, parseInt(page, 10) || 1);
+  const parsedLimit = Math.min(50, Math.max(1, parseInt(limit, 10) || 20));
+  return { page: parsedPage, limit: parsedLimit };
+};
+
 export const getJobs = async (req, res, next) => {
   try {
     const { 
@@ -15,9 +22,11 @@ export const getJobs = async (req, res, next) => {
       limit = 20
     } = req.query;
 
+    const safePagination = sanitizePagination(page, limit);
+
     const result = await jobService.getAllJobs(
       { q, location, employmentType, workArrangement, category, experienceLevel, minSalary, maxSalary },
-      { page, limit }
+      safePagination
     );
 
     res.json({
@@ -69,7 +78,8 @@ export const getJobById = async (req, res, next) => {
 export const searchJobs = async (req, res, next) => {
   try {
     const { q, location, page = 1, limit = 20 } = req.query;
-    const result = await jobService.getAllJobs({ q, location }, { page, limit });
+    const safePagination = sanitizePagination(page, limit);
+    const result = await jobService.getAllJobs({ q, location }, safePagination);
 
     res.json({
       success: true,
