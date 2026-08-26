@@ -14,7 +14,7 @@ export const Navbar: React.FC = () => {
     { label: 'Find Jobs', href: '/jobs', active: location.pathname === '/jobs' || location.pathname === '/' },
     { label: 'Companies', href: '/companies', active: location.pathname === '/companies' },
     { label: 'Career Resources', href: '#resources', active: false },
-    { label: 'For Employers', href: '#employers', active: false },
+    { label: 'For Employers', href: '/employers', active: location.pathname === '/employers' },
   ];
 
   return (

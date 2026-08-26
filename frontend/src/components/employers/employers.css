@@ -1,0 +1,49 @@
+/* For Employers landing page — page-scoped styles.
+   Complements the global Hirra animation system (src/animations). */
+
+/* Gentle floating motion for hero overlay chips */
+@keyframes employers-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.anim-float {
+  animation: employers-float 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.anim-float-delayed {
+  animation: employers-float 6.5s ease-in-out 1.2s infinite;
+  will-change: transform;
+}
+
+/* Slow dash march for the Companies <-> Candidates connector */
+@keyframes employers-dash-march {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.anim-dash-march {
+  animation: employers-dash-march 1.6s linear infinite;
+}
+
+/* Soft live pulse for "new application" indicator dots
+   (reuses the hirra-subtle-pulse keyframes from the global system) */
+.anim-live-dot {
+  animation: hirra-subtle-pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .anim-float-delayed,
+  .anim-dash-march,
+  .anim-live-dot {
+    animation: none !important;
+  }
+}

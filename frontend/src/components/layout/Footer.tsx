@@ -44,9 +44,9 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-3.5 text-sm">
               <li>
-                <a href="#post-job" className="hover:text-white transition-colors">
+                <Link to="/employers" className="hover:text-white transition-colors">
                   Post a Job
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#hiring" className="hover:text-white transition-colors">

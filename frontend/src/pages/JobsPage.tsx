@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal } from 'lucide-react';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { JobSearch } from '@/components/jobs/JobSearch';
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { JobFilters } from '@/components/jobs/JobFilters';
@@ -47,10 +45,8 @@ export const JobsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafbfc] dark:bg-slate-950 transition-colors">
-      <Navbar />
-
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <>
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         
         {/* Top Search Bar */}
         <div className="mb-10 anim-fade-up">
@@ -146,15 +142,13 @@ export const JobsPage: React.FC = () => {
 
         </div>
 
-      </main>
+      </div>
 
       {/* Slide-over Job Details Drawer */}
       <JobDetailDrawer
         jobId={selectedJobId}
         onClose={() => setSelectedJobId(null)}
       />
-
-      <Footer />
-    </div>
+    </>
   );
 };

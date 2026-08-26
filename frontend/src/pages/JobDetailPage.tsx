@@ -12,8 +12,6 @@ import {
   Check, 
   Send 
 } from 'lucide-react';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { CompanyLogo } from '@/components/companies/CompanyLogo';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -46,42 +44,31 @@ export const JobDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#fafbfc] dark:bg-slate-950">
-        <Navbar />
-        <main className="flex-1 flex items-center justify-center">
-          <LoadingState message="Loading position details..." />
-        </main>
-        <Footer />
+      <div className="flex items-center justify-center py-24">
+        <LoadingState message="Loading position details..." />
       </div>
     );
   }
 
   if (isError || !job) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#fafbfc] dark:bg-slate-950">
-        <Navbar />
-        <main className="flex-1 max-w-4xl mx-auto px-4 py-16 w-full">
-          <ErrorState
-            title="Job Not Found"
-            message={error?.message || "The position you are looking for may have expired or does not exist."}
-            onRetry={refetch}
-          />
-          <div className="text-center mt-4">
-            <Button variant="outline" onClick={() => navigate('/jobs')}>
-              Back to All Jobs
-            </Button>
-          </div>
-        </main>
-        <Footer />
+      <div className="max-w-4xl mx-auto px-4 py-16 w-full">
+        <ErrorState
+          title="Job Not Found"
+          message={error?.message || "The position you are looking for may have expired or does not exist."}
+          onRetry={refetch}
+        />
+        <div className="text-center mt-4">
+          <Button variant="outline" onClick={() => navigate('/jobs')}>
+            Back to All Jobs
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafbfc] dark:bg-slate-950 transition-colors">
-      <Navbar />
-
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         
         {/* Breadcrumb Navigation */}
         <div className="flex items-center gap-2 text-sm font-medium text-slate-500 mb-8 dark:text-slate-400">
@@ -371,9 +358,6 @@ export const JobDetailPage: React.FC = () => {
 
         </div>
 
-      </main>
-
-      <Footer />
     </div>
   );
 };
