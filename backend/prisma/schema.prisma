@@ -1,0 +1,33 @@
+// Prisma Schema for Hirra
+// Documentation: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  JOB_SEEKER
+  EMPLOYER
+  ADMIN
+}
+
+model User {
+  id             String    @id @default(cuid())
+  supabaseUserId String    @unique
+  email          String    @unique
+  firstName      String?
+  lastName       String?
+  avatarUrl      String?
+  role           UserRole  @default(JOB_SEEKER)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([email])
+  @@map("users")
+}

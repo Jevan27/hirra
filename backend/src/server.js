@@ -11,6 +11,9 @@ import jobsRouter from './routes/jobs.js';
 import companiesRouter from './routes/companies.js';
 import categoriesRouter from './routes/categories.js';
 import locationRouter from './routes/location.js';
+import authRouter from './routes/auth.js';
+import { isSupabaseConfigured } from './config/supabase.js';
+import { isDatabaseConfigured, prisma } from './config/prisma.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -53,11 +56,16 @@ app.get('/api/health', (req, res) => {
     status: 'healthy',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
-    service: 'hirra-api'
+    service: 'hirra-api',
+    integrations: {
+      supabase: isSupabaseConfigured() ? 'configured' : 'pending_configuration',
+      database: isDatabaseConfigured() ? 'configured' : 'pending_configuration'
+    }
   });
 });
 
 // Mount Resource API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/jobs', jobsRouter);
 app.use('/api/companies', companiesRouter);
 app.use('/api/categories', categoriesRouter);
@@ -69,13 +77,32 @@ app.use(notFound);
 // Centralized Error Handler
 app.use(errorHandler);
 
+// Graceful shutdown
+const gracefulShutdown = async () => {
+  console.log('\nGracefully shutting down Hirra API...');
+  if (isDatabaseConfigured()) {
+    try {
+      await prisma.$disconnect();
+    } catch (_) {
+      // ignore
+    }
+  }
+  process.exit(0);
+};
+
+process.on('SIGINT', gracefulShutdown);
+process.on('SIGTERM', gracefulShutdown);
+
 // Start Server
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`🚀 Hirra API Server is running securely on http://localhost:${PORT}`);
     console.log(`📡 Health Check: http://localhost:${PORT}/api/health`);
-    console.log(`💼 Jobs API: http://localhost:${PORT}/api/jobs`);
+    console.log(`🔐 Auth API:     http://localhost:${PORT}/api/auth`);
+    console.log(`💼 Jobs API:     http://localhost:${PORT}/api/jobs`);
     console.log(`📍 Location API: http://localhost:${PORT}/api/location/autocomplete`);
+    console.log(`🔑 Supabase:     ${isSupabaseConfigured() ? 'Configured ✅' : 'Awaiting credentials in .env ⚠️'}`);
+    console.log(`🗄️  Prisma DB:    ${isDatabaseConfigured() ? 'Configured ✅' : 'Awaiting credentials in .env ⚠️'}`);
   });
 }
 
