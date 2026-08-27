@@ -51,10 +51,21 @@ class AuthService {
     const email = (supabaseUser.email || overrideFields.email || '').toLowerCase().trim();
     const metadata = supabaseUser.user_metadata || {};
 
-    const firstName = overrideFields.firstName ?? metadata.first_name ?? metadata.firstName ?? null;
+    // Extract names cleanly from various OAuth provider payloads (Google, LinkedIn, Microsoft)
+    let parsedFirstName = overrideFields.firstName ?? metadata.first_name ?? metadata.firstName ?? metadata.given_name ?? null;
+    let parsedLastName = overrideFields.lastName ?? metadata.last_name ?? metadata.lastName ?? metadata.family_name ?? null;
+
+    if (!parsedFirstName && !parsedLastName && (metadata.full_name || metadata.name)) {
+      const fullName = (metadata.full_name || metadata.name || '').trim();
+      const parts = fullName.split(' ');
+      parsedFirstName = parts[0] || null;
+      parsedLastName = parts.slice(1).join(' ') || null;
+    }
+
+    const firstName = parsedFirstName;
     const middleName = overrideFields.middleName ?? metadata.middle_name ?? metadata.middleName ?? null;
-    const lastName = overrideFields.lastName ?? metadata.last_name ?? metadata.lastName ?? null;
-    const avatarUrl = overrideFields.avatarUrl ?? metadata.avatar_url ?? metadata.picture ?? null;
+    const lastName = parsedLastName;
+    const avatarUrl = overrideFields.avatarUrl ?? metadata.avatar_url ?? metadata.picture ?? metadata.avatar ?? null;
     
     // Validate role against enum
     let role = overrideFields.role ?? metadata.role ?? USER_ROLES.CANDIDATE;

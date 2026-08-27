@@ -1,0 +1,225 @@
+import React, { createContext, useContext, useEffect, useState, useCallback, useTransition } from 'react';
+import { Session, User as SupabaseUser } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
+import { apiClient } from '@/lib/api/client';
+
+export type OAuthProvider = 'google' | 'linkedin_oidc';
+
+export interface AuthUser {
+  uid: string;
+  email: string;
+  role: 'CANDIDATE' | 'EMPLOYER' | 'ADMIN';
+  firstName?: string | null;
+  lastName?: string | null;
+  avatarUrl?: string | null;
+  profile?: any;
+}
+
+interface AuthContextType {
+  user: AuthUser | null;
+  supabaseUser: SupabaseUser | null;
+  session: Session | null;
+  isLoading: boolean;
+  isAuthModalOpen: boolean;
+  authError: string | null;
+  connectingProvider: OAuthProvider | null;
+  openAuthModal: (options?: { returnUrl?: string }) => void;
+  closeAuthModal: () => void;
+  signInWithOAuth: (provider: OAuthProvider) => Promise<void>;
+  signOut: () => Promise<void>;
+  clearAuthError: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const RETURN_URL_KEY = 'hirra_auth_return_url';
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [supabaseUser, setSupabaseUser] = useState<SupabaseUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [connectingProvider, setConnectingProvider] = useState<OAuthProvider | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
+
+  const syncUserWithBackend = useCallback(async (token: string): Promise<AuthUser | null> => {
+    try {
+      const response = await apiClient.get<{
+        success: boolean;
+        data: {
+          uid: string;
+          email: string;
+          role: 'CANDIDATE' | 'EMPLOYER' | 'ADMIN';
+          profile?: any;
+        };
+      }>('/auth/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data?.success && response.data?.data) {
+        const { uid, email, role, profile } = response.data.data;
+        return {
+          uid,
+          email,
+          role: role || 'CANDIDATE',
+          firstName: profile?.firstName || null,
+          lastName: profile?.lastName || null,
+          avatarUrl: profile?.avatarUrl || null,
+          profile,
+        };
+      }
+    } catch (err: any) {
+      console.warn('[AuthContext] Backend sync fallback to Supabase session metadata:', err?.message);
+    }
+    return null;
+  }, []);
+
+  const refreshUserData = useCallback(async (currentSession: Session | null) => {
+    if (!currentSession?.access_token || !currentSession.user) {
+      setUser(null);
+      setSupabaseUser(null);
+      setSession(null);
+      setIsLoading(false);
+      return;
+    }
+
+    setSession(currentSession);
+    setSupabaseUser(currentSession.user);
+
+    // Sync with PostgreSQL via backend
+    const backendUser = await syncUserWithBackend(currentSession.access_token);
+
+    if (backendUser) {
+      setUser(backendUser);
+    } else {
+      // Graceful fallback if backend is momentarily unreachable
+      const meta = currentSession.user.user_metadata || {};
+      setUser({
+        uid: currentSession.user.id,
+        email: currentSession.user.email || '',
+        role: meta.role || 'CANDIDATE',
+        firstName: meta.first_name || meta.given_name || meta.name || null,
+        lastName: meta.last_name || meta.family_name || null,
+        avatarUrl: meta.avatar_url || meta.picture || null,
+      });
+    }
+
+    setIsLoading(false);
+  }, [syncUserWithBackend]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    // Check active session on mount
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      if (mounted) {
+        refreshUserData(initialSession);
+      }
+    });
+
+    // Listen for auth events (sign in, sign out, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      if (mounted) {
+        startTransition(() => {
+          refreshUserData(newSession);
+        });
+      }
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [refreshUserData]);
+
+  const openAuthModal = (options?: { returnUrl?: string }) => {
+    if (options?.returnUrl) {
+      try {
+        sessionStorage.setItem(RETURN_URL_KEY, options.returnUrl);
+      } catch {
+        // fallback ignore
+      }
+    }
+    setAuthError(null);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    if (!connectingProvider) {
+      setIsAuthModalOpen(false);
+      setAuthError(null);
+    }
+  };
+
+  const clearAuthError = () => {
+    setAuthError(null);
+  };
+
+  const signInWithOAuth = async (provider: OAuthProvider) => {
+    try {
+      setConnectingProvider(provider);
+      setAuthError(null);
+
+      const callbackUrl = `${window.location.origin}/auth/callback`;
+
+      const options: { redirectTo: string } = {
+        redirectTo: callbackUrl,
+      };
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options,
+      });
+
+      if (error) {
+        setAuthError(error.message || `Failed to initialize ${provider} login.`);
+        setConnectingProvider(null);
+      }
+    } catch (err: any) {
+      setAuthError(err?.message || 'An unexpected error occurred during login initialization.');
+      setConnectingProvider(null);
+    }
+  };
+
+  const signOut = async () => {
+    setIsLoading(true);
+    await supabase.auth.signOut();
+    setUser(null);
+    setSupabaseUser(null);
+    setSession(null);
+    setIsLoading(false);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        supabaseUser,
+        session,
+        isLoading,
+        isAuthModalOpen,
+        authError,
+        connectingProvider,
+        openAuthModal,
+        closeAuthModal,
+        signInWithOAuth,
+        signOut,
+        clearAuthError,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
