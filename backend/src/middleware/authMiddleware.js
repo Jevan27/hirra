@@ -41,9 +41,9 @@ export const requireAuth = async (req, res, next) => {
 
     // Attach contextual user info to request (Safe, no passwords/secrets)
     req.user = {
-      supabaseUserId: supabaseUser.id,
+      uid: supabaseUser.id,
       email: supabaseUser.email,
-      role: prismaUser?.role || 'JOB_SEEKER',
+      role: prismaUser?.role || 'CANDIDATE',
       prismaUser,
       supabaseUser
     };
@@ -76,9 +76,9 @@ export const optionalAuth = async (req, res, next) => {
     const prismaUser = await authService.findOrCreateUser(supabaseUser);
 
     req.user = {
-      supabaseUserId: supabaseUser.id,
+      uid: supabaseUser.id,
       email: supabaseUser.email,
-      role: prismaUser?.role || 'JOB_SEEKER',
+      role: prismaUser?.role || 'CANDIDATE',
       prismaUser,
       supabaseUser
     };
@@ -94,7 +94,7 @@ export const optionalAuth = async (req, res, next) => {
 /**
  * Guard Middleware: Role-Based Access Control (RBAC).
  * Enforces that the authenticated user possesses at least one of the specified roles.
- * @param  {...string} allowedRoles - List of permitted roles (e.g. 'ADMIN', 'EMPLOYER')
+ * @param  {...string} allowedRoles - List of permitted roles (e.g. 'ADMIN', 'EMPLOYER', 'CANDIDATE')
  */
 export const requireRole = (...allowedRoles) => {
   return (req, res, next) => {

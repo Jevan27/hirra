@@ -3,18 +3,19 @@
  */
 
 export const USER_ROLES = Object.freeze({
-  JOB_SEEKER: 'JOB_SEEKER',
+  CANDIDATE: 'CANDIDATE',
+  JOB_SEEKER: 'CANDIDATE', // Backward-compatibility alias
   EMPLOYER: 'EMPLOYER',
   ADMIN: 'ADMIN'
 });
 
 /**
- * @typedef {'JOB_SEEKER' | 'EMPLOYER' | 'ADMIN'} UserRole
+ * @typedef {'CANDIDATE' | 'EMPLOYER' | 'ADMIN'} UserRole
  */
 
 /**
  * @typedef {Object} AuthenticatedUser
- * @property {string} supabaseUserId - Supabase Auth UID (UUID)
+ * @property {string} uid - Supabase Auth UID (UUID)
  * @property {string} email - Authenticated user email
  * @property {UserRole} role - Application role from PostgreSQL/Prisma
  * @property {Object|null} prismaUser - Full application user profile from PostgreSQL

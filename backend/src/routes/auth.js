@@ -30,8 +30,9 @@ router.post(
     body('email').isEmail().normalizeEmail().withMessage('Valid email address is required'),
     body('password').isLength({ min: 6, max: 100 }).withMessage('Password must be at least 6 characters long'),
     body('firstName').optional().isString().trim().isLength({ max: 50 }).withMessage('First name too long'),
+    body('middleName').optional().isString().trim().isLength({ max: 50 }).withMessage('Middle name too long'),
     body('lastName').optional().isString().trim().isLength({ max: 50 }).withMessage('Last name too long'),
-    body('role').optional().isIn(['JOB_SEEKER', 'EMPLOYER', 'ADMIN']).withMessage('Role must be JOB_SEEKER, EMPLOYER, or ADMIN'),
+    body('role').optional().isIn(['CANDIDATE', 'JOB_SEEKER', 'EMPLOYER', 'ADMIN']).withMessage('Role must be CANDIDATE, EMPLOYER, or ADMIN'),
     validateRequest
   ],
   register

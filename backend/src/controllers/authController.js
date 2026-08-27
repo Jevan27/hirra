@@ -2,11 +2,12 @@ import { authService } from '../auth/authService.js';
 
 export const register = async (req, res, next) => {
   try {
-    const { email, password, firstName, lastName, role } = req.body;
+    const { email, password, firstName, middleName, lastName, role } = req.body;
     const result = await authService.register({
       email,
       password,
       firstName,
+      middleName,
       lastName,
       role
     });
@@ -42,7 +43,7 @@ export const getMe = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        supabaseUserId: req.user.supabaseUserId,
+        uid: req.user.uid,
         email: req.user.email,
         role: req.user.role,
         profile: req.user.prismaUser

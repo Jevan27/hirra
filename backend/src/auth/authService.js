@@ -47,27 +47,28 @@ class AuthService {
       throw new Error('Invalid Supabase user object');
     }
 
-    const supabaseUserId = supabaseUser.id;
+    const uid = supabaseUser.id;
     const email = (supabaseUser.email || overrideFields.email || '').toLowerCase().trim();
     const metadata = supabaseUser.user_metadata || {};
 
     const firstName = overrideFields.firstName ?? metadata.first_name ?? metadata.firstName ?? null;
+    const middleName = overrideFields.middleName ?? metadata.middle_name ?? metadata.middleName ?? null;
     const lastName = overrideFields.lastName ?? metadata.last_name ?? metadata.lastName ?? null;
     const avatarUrl = overrideFields.avatarUrl ?? metadata.avatar_url ?? metadata.picture ?? null;
     
     // Validate role against enum
-    let role = overrideFields.role ?? metadata.role ?? USER_ROLES.JOB_SEEKER;
+    let role = overrideFields.role ?? metadata.role ?? USER_ROLES.CANDIDATE;
     if (!Object.values(USER_ROLES).includes(role)) {
-      role = USER_ROLES.JOB_SEEKER;
+      role = USER_ROLES.CANDIDATE;
     }
 
     // If database connection is not yet configured, return safe fallback user shape
     if (!isDatabaseConfigured()) {
       return {
-        id: `transient_${supabaseUserId}`,
-        supabaseUserId,
+        uid,
         email,
         firstName,
+        middleName,
         lastName,
         avatarUrl,
         role,
@@ -79,20 +80,31 @@ class AuthService {
 
     try {
       const user = await prisma.user.upsert({
-        where: { supabaseUserId },
+        where: { uid },
         update: {
           email: email || undefined,
           firstName: firstName || undefined,
+          middleName: middleName || undefined,
           lastName: lastName || undefined,
           avatarUrl: avatarUrl || undefined,
+          lastLoginAt: new Date(),
         },
         create: {
-          supabaseUserId,
+          uid,
           email,
           firstName,
+          middleName,
           lastName,
           avatarUrl,
           role,
+          emailVerified: Boolean(supabaseUser.email_confirmed_at || supabaseUser.confirmed_at),
+          lastLoginAt: new Date(),
+        },
+        include: {
+          jobRole: true,
+          skills: { include: { skill: true } },
+          links: true,
+          resumes: true
         }
       });
 
@@ -110,7 +122,7 @@ class AuthService {
    * Register a new user with email and password via Supabase Auth
    * and create corresponding Prisma User record.
    */
-  async register({ email, password, firstName, lastName, role = USER_ROLES.JOB_SEEKER }) {
+  async register({ email, password, firstName, middleName, lastName, role = USER_ROLES.CANDIDATE }) {
     if (!isSupabaseConfigured()) {
       const error = new Error('Supabase authentication is not configured on the server. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.');
       error.statusCode = 503;
@@ -119,7 +131,7 @@ class AuthService {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
-    const validatedRole = Object.values(USER_ROLES).includes(role) ? role : USER_ROLES.JOB_SEEKER;
+    const validatedRole = Object.values(USER_ROLES).includes(role) ? role : USER_ROLES.CANDIDATE;
 
     // Create user in Supabase Auth via Admin API
     const { data, error } = await supabase.auth.admin.createUser({
@@ -128,6 +140,7 @@ class AuthService {
       email_confirm: true, // auto-confirm for immediate access
       user_metadata: {
         first_name: firstName || '',
+        middle_name: middleName || '',
         last_name: lastName || '',
         role: validatedRole
       }
@@ -146,6 +159,7 @@ class AuthService {
     const prismaUser = await this.findOrCreateUser(supabaseUser, {
       email: normalizedEmail,
       firstName,
+      middleName,
       lastName,
       role: validatedRole
     });
@@ -200,7 +214,7 @@ class AuthService {
         tokenType: session.token_type
       },
       user: {
-        supabaseUserId: supabaseUser.id,
+        uid: supabaseUser.id,
         email: supabaseUser.email,
         prismaUser
       }
@@ -241,7 +255,7 @@ class AuthService {
         tokenType: session.token_type
       },
       user: {
-        supabaseUserId: supabaseUser.id,
+        uid: supabaseUser.id,
         email: supabaseUser.email,
         prismaUser
       }

@@ -1,80 +1,241 @@
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { prisma } from '../config/prisma.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const JOBS_FILE = path.join(__dirname, '../data/jobs.json');
+const formatSalary = (min, max, currency = 'PHP') => {
+  if (!min && !max) return null;
+  const formatNum = (num) => (num >= 1000 ? `₱${Math.round(num / 1000)}k` : `₱${num}`);
+  if (min && max) return `${formatNum(min)} – ${formatNum(max)}/mo`;
+  if (min) return `From ${formatNum(min)}/mo`;
+  return `Up to ${formatNum(max)}/mo`;
+};
+
+const mapWorkArrangement = (val) => {
+  if (!val) return 'Hybrid';
+  switch (val) {
+    case 'REMOTE': return 'Remote';
+    case 'ONSITE': return 'On-site';
+    case 'HYBRID': return 'Hybrid';
+    default: return val;
+  }
+};
+
+const mapEmploymentType = (val) => {
+  if (!val) return 'Full-time';
+  switch (val) {
+    case 'FULL_TIME': return 'Full-time';
+    case 'PART_TIME': return 'Part-time';
+    case 'CONTRACT': return 'Contract';
+    case 'FREELANCE': return 'Freelance';
+    case 'INTERNSHIP': return 'Internship';
+    case 'TEMPORARY': return 'Temporary';
+    default: return val;
+  }
+};
+
+const mapExperienceLevel = (val) => {
+  if (!val) return 'Mid-Level';
+  switch (val) {
+    case 'ENTRY_LEVEL': return 'Entry-Level';
+    case 'JUNIOR': return 'Junior';
+    case 'MID_LEVEL': return 'Mid-Level';
+    case 'SENIOR': return 'Senior';
+    case 'LEAD': return 'Lead';
+    case 'MANAGER': return 'Manager';
+    case 'DIRECTOR': return 'Director';
+    case 'EXECUTIVE': return 'Executive';
+    default: return val;
+  }
+};
+
+const parseJsonOrLines = (val) => {
+  if (!val) return [];
+  if (Array.isArray(val)) return val;
+  try {
+    const parsed = JSON.parse(val);
+    if (Array.isArray(parsed)) return parsed;
+  } catch {
+    // fallback
+  }
+  return val.split('\n').map(s => s.trim()).filter(Boolean);
+};
+
+const formatJob = (job) => {
+  if (!job) return null;
+  
+  const min = job.salaryMin || 0;
+  const max = job.salaryMax || 0;
+  const currency = job.salaryCurrency || 'PHP';
+
+  const tags = job.skills?.map(js => js.skill.name) || [];
+
+  return {
+    id: job.id,
+    title: job.title,
+    companyId: job.companyId,
+    companyName: job.company?.name || 'Company',
+    location: job.location || job.company?.city || 'Philippines',
+    workArrangement: mapWorkArrangement(job.workplaceType),
+    employmentType: mapEmploymentType(job.jobType),
+    salary: {
+      min,
+      max,
+      currency,
+      period: 'mo',
+      formatted: formatSalary(min, max, currency)
+    },
+    category: job.category?.name || 'Technology',
+    experienceLevel: mapExperienceLevel(job.experienceLevel),
+    description: job.description,
+    responsibilities: parseJsonOrLines(job.responsibilities),
+    requirements: parseJsonOrLines(job.requirements),
+    benefits: [
+      'Comprehensive HMO coverage with dependent subsidy',
+      'Flexible working schedule and modern tech setup',
+      'Annual performance bonuses and career advancement',
+      'Paid learning stipends and professional certifications'
+    ],
+    tags: tags.length > 0 ? tags : [job.category?.name || 'Technology'],
+    postedAt: job.createdAt.toISOString(),
+    postedTime: 'Recently',
+    featured: true,
+    company: job.company ? {
+      id: job.company.id,
+      name: job.company.name,
+      slug: job.company.slug,
+      location: job.company.city || job.company.address || 'Philippines',
+      website: job.company.website,
+      industry: job.company.industry?.name || 'Technology',
+      size: job.company.companySize || '500-1000 employees',
+      description: job.company.description
+    } : null
+  };
+};
 
 class JobRepository {
   async getAll() {
-    const raw = await fs.readFile(JOBS_FILE, 'utf-8');
-    return JSON.parse(raw);
+    const jobs = await prisma.job.findMany({
+      where: { status: 'PUBLISHED' },
+      include: {
+        company: { include: { industry: true } },
+        category: true,
+        skills: { include: { skill: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    return jobs.map(formatJob);
   }
 
   async getById(id) {
-    const jobs = await this.getAll();
-    return jobs.find(job => job.id === id) || null;
+    const job = await prisma.job.findUnique({
+      where: { id },
+      include: {
+        company: { include: { industry: true } },
+        category: true,
+        skills: { include: { skill: true } }
+      }
+    });
+    return formatJob(job);
   }
 
   async getFeatured() {
-    const jobs = await this.getAll();
-    return jobs.filter(job => job.featured === true);
+    const jobs = await prisma.job.findMany({
+      where: { status: 'PUBLISHED' },
+      include: {
+        company: { include: { industry: true } },
+        category: true,
+        skills: { include: { skill: true } }
+      },
+      take: 6,
+      orderBy: { createdAt: 'desc' }
+    });
+    return jobs.map(formatJob);
   }
 
   async findByFilters({ q, location, employmentType, workArrangement, category, experienceLevel, minSalary, maxSalary }) {
-    let jobs = await this.getAll();
+    const where = { status: 'PUBLISHED' };
 
     if (q && q.trim()) {
-      const term = q.trim().toLowerCase();
-      jobs = jobs.filter(job => 
-        job.title.toLowerCase().includes(term) ||
-        job.companyName.toLowerCase().includes(term) ||
-        job.description.toLowerCase().includes(term) ||
-        (job.tags && job.tags.some(tag => tag.toLowerCase().includes(term)))
-      );
+      const term = q.trim();
+      where.OR = [
+        { title: { contains: term, mode: 'insensitive' } },
+        { description: { contains: term, mode: 'insensitive' } },
+        { company: { name: { contains: term, mode: 'insensitive' } } },
+        { skills: { some: { skill: { name: { contains: term, mode: 'insensitive' } } } } }
+      ];
     }
 
     if (location && location.trim()) {
-      const locTerm = location.trim().toLowerCase();
-      jobs = jobs.filter(job => job.location.toLowerCase().includes(locTerm));
+      where.location = { contains: location.trim(), mode: 'insensitive' };
     }
 
     if (employmentType && employmentType !== 'all') {
-      const types = Array.isArray(employmentType) ? employmentType : [employmentType];
-      jobs = jobs.filter(job => types.some(t => job.employmentType.toLowerCase() === t.toLowerCase()));
+      const typeMap = {
+        'full-time': 'FULL_TIME',
+        'part-time': 'PART_TIME',
+        'contract': 'CONTRACT',
+        'freelance': 'FREELANCE',
+        'internship': 'INTERNSHIP'
+      };
+      const mapped = typeMap[employmentType.toLowerCase()];
+      if (mapped) where.jobType = mapped;
     }
 
     if (workArrangement && workArrangement !== 'all') {
-      const arrangements = Array.isArray(workArrangement) ? workArrangement : [workArrangement];
-      jobs = jobs.filter(job => arrangements.some(a => job.workArrangement.toLowerCase() === a.toLowerCase()));
+      const arrMap = {
+        'remote': 'REMOTE',
+        'hybrid': 'HYBRID',
+        'on-site': 'ONSITE',
+        'onsite': 'ONSITE'
+      };
+      const mapped = arrMap[workArrangement.toLowerCase()];
+      if (mapped) where.workplaceType = mapped;
     }
 
     if (category && category !== 'all') {
-      const cats = Array.isArray(category) ? category : [category];
-      jobs = jobs.filter(job => cats.some(c => job.category.toLowerCase().includes(c.toLowerCase()) || c.toLowerCase().includes(job.category.toLowerCase())));
+      where.category = {
+        name: { contains: category, mode: 'insensitive' }
+      };
     }
 
     if (experienceLevel && experienceLevel !== 'all') {
-      const levels = Array.isArray(experienceLevel) ? experienceLevel : [experienceLevel];
-      jobs = jobs.filter(job => levels.some(l => job.experienceLevel.toLowerCase() === l.toLowerCase()));
+      const expMap = {
+        'entry-level': 'ENTRY_LEVEL',
+        'entry': 'ENTRY_LEVEL',
+        'junior': 'JUNIOR',
+        'mid-level': 'MID_LEVEL',
+        'mid': 'MID_LEVEL',
+        'senior': 'SENIOR',
+        'lead': 'LEAD',
+        'manager': 'MANAGER'
+      };
+      const mapped = expMap[experienceLevel.toLowerCase()];
+      if (mapped) where.experienceLevel = mapped;
     }
 
     if (minSalary) {
       const min = Number(minSalary);
       if (!isNaN(min)) {
-        jobs = jobs.filter(job => job.salary?.max >= min);
+        where.salaryMax = { gte: min };
       }
     }
 
     if (maxSalary) {
       const max = Number(maxSalary);
       if (!isNaN(max)) {
-        jobs = jobs.filter(job => job.salary?.min <= max);
+        where.salaryMin = { lte: max };
       }
     }
 
-    return jobs;
+    const jobs = await prisma.job.findMany({
+      where,
+      include: {
+        company: { include: { industry: true } },
+        category: true,
+        skills: { include: { skill: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return jobs.map(formatJob);
   }
 }
 
