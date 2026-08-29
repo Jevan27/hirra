@@ -90,34 +90,56 @@ class AuthService {
     }
 
     try {
-      const user = await prisma.user.upsert({
-        where: { uid },
-        update: {
-          email: email || undefined,
-          firstName: firstName || undefined,
-          middleName: middleName || undefined,
-          lastName: lastName || undefined,
-          avatarUrl: avatarUrl || undefined,
-          lastLoginAt: new Date(),
-        },
-        create: {
-          uid,
-          email,
-          firstName,
-          middleName,
-          lastName,
-          avatarUrl,
-          role,
-          emailVerified: Boolean(supabaseUser.email_confirmed_at || supabaseUser.confirmed_at),
-          lastLoginAt: new Date(),
-        },
-        include: {
-          jobRole: true,
-          skills: { include: { skill: true } },
-          links: true,
-          resumes: true
+      // Reconcile user by UID or Email to prevent unique constraint conflicts across re-authentications
+      let user = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { uid },
+            ...(email ? [{ email }] : [])
+          ]
         }
       });
+
+      if (user) {
+        user = await prisma.user.update({
+          where: { uid: user.uid },
+          data: {
+            uid, // sync with latest Supabase UID
+            email: email || undefined,
+            firstName: firstName || undefined,
+            middleName: middleName || undefined,
+            lastName: lastName || undefined,
+            avatarUrl: avatarUrl || undefined,
+            lastLoginAt: new Date(),
+          },
+          include: {
+            jobRole: true,
+            skills: { include: { skill: true } },
+            links: true,
+            resumes: true
+          }
+        });
+      } else {
+        user = await prisma.user.create({
+          data: {
+            uid,
+            email,
+            firstName,
+            middleName,
+            lastName,
+            avatarUrl,
+            role,
+            emailVerified: Boolean(supabaseUser.email_confirmed_at || supabaseUser.confirmed_at),
+            lastLoginAt: new Date(),
+          },
+          include: {
+            jobRole: true,
+            skills: { include: { skill: true } },
+            links: true,
+            resumes: true
+          }
+        });
+      }
 
       return user;
     } catch (dbError) {

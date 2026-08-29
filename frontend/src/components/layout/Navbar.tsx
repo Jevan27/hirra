@@ -121,6 +121,13 @@ export const Navbar: React.FC = () => {
 
                   <div className="py-1">
                     <Link
+                      to={user.profileCompleted ? "/profile" : "/candidate/onboarding"}
+                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/30 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 transition-colors"
+                    >
+                      <UserIcon size={16} />
+                      {user.profileCompleted ? "Profile" : "Complete Profile (CV)"}
+                    </Link>
+                    <Link
                       to="/jobs"
                       className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
                     >
@@ -219,6 +226,17 @@ export const Navbar: React.FC = () => {
                         {user.role}
                       </span>
                     </div>
+                  )}
+
+                  {user && (
+                    <Link
+                      to={user.profileCompleted ? "/profile" : "/candidate/onboarding"}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-base font-semibold px-3 py-2 rounded-lg transition-colors bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400 flex items-center gap-2"
+                    >
+                      <UserIcon size={18} />
+                      {user.profileCompleted ? "Profile" : "Complete Profile (CV)"}
+                    </Link>
                   )}
 
                   {navLinks.map((link) => (

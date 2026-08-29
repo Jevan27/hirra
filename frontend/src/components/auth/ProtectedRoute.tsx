@@ -6,11 +6,13 @@ import { LoadingState } from '@/components/common/LoadingState';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   allowedRoles?: Array<'CANDIDATE' | 'EMPLOYER' | 'ADMIN'>;
+  requireCompleteProfile?: boolean;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   allowedRoles = ['CANDIDATE'],
+  requireCompleteProfile = false,
 }) => {
   const { user, isLoading, openAuthModal } = useAuth();
   const location = useLocation();
@@ -35,6 +37,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
+  }
+
+  // Redirect candidate to onboarding if their profile is incomplete
+  if (
+    requireCompleteProfile &&
+    user.role === 'CANDIDATE' &&
+    user.profileCompleted === false &&
+    location.pathname !== '/candidate/onboarding'
+  ) {
+    return <Navigate to="/candidate/onboarding" replace />;
   }
 
   return <>{children}</>;

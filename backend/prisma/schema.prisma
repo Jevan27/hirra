@@ -2,7 +2,8 @@
 // Documentation: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -161,6 +162,15 @@ enum NotificationType {
   OTHER
 }
 
+enum ResumeStatus {
+  UPLOADING
+  UPLOADED
+  PROCESSING
+  COMPLETED
+  FAILED
+  DELETED
+}
+
 model User {
   uid                String    @id @db.Uuid
   firstName          String?
@@ -178,6 +188,7 @@ model User {
   emailVerified      Boolean   @default(false)
   lastLoginAt        DateTime?
   avatarUrl          String?
+  profileCompleted   Boolean   @default(false)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
@@ -265,20 +276,26 @@ model UserSkill {
 }
 
 model Resume {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [uid], onDelete: Cascade)
-  name      String
-  fileUrl   String
-  fileType  String
-  isDefault Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String        @id @default(uuid()) @db.Uuid
+  userId       String        @db.Uuid
+  user         User          @relation(fields: [userId], references: [uid], onDelete: Cascade)
+  name         String
+  objectKey    String?
+  fileUrl      String?
+  fileType     String?
+  originalName String?
+  mimeType     String?
+  size         Int?
+  status       ResumeStatus  @default(UPLOADED)
+  isDefault    Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
   applications Application[]
 
   @@index([userId])
   @@index([userId, isDefault])
+  @@index([status])
   @@map("resumes")
 }
 

@@ -12,6 +12,7 @@ import companiesRouter from './routes/companies.js';
 import categoriesRouter from './routes/categories.js';
 import locationRouter from './routes/location.js';
 import authRouter from './routes/auth.js';
+import candidateRouter from './routes/candidate.js';
 import { isSupabaseConfigured } from './config/supabase.js';
 import { isDatabaseConfigured, prisma } from './config/prisma.js';
 
@@ -49,6 +50,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Hirra API is running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      jobs: '/api/jobs',
+      companies: '/api/companies',
+      categories: '/api/categories',
+      location: '/api/location',
+      candidate: '/api/candidate'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
@@ -66,6 +85,7 @@ app.get('/api/health', (req, res) => {
 
 // Mount Resource API Routes
 app.use('/api/auth', authRouter);
+app.use('/api/candidate', candidateRouter);
 app.use('/api/jobs', jobsRouter);
 app.use('/api/companies', companiesRouter);
 app.use('/api/categories', categoriesRouter);

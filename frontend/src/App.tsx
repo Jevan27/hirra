@@ -10,6 +10,9 @@ import { CompaniesPage } from './pages/CompaniesPage';
 import { CompanyDetailPage } from './pages/CompanyDetailPage';
 import { EmployersPage } from './pages/EmployersPage';
 import { AuthCallbackPage } from './pages/AuthCallbackPage';
+import { CandidateOnboardingPage } from './pages/CandidateOnboardingPage';
+import { CandidateProfilePage } from './pages/CandidateProfilePage';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 export default function App() {
   return (
@@ -23,6 +26,23 @@ export default function App() {
           <Route path="/companies/:id" element={<CompanyDetailPage />} />
           <Route path="/employers" element={<EmployersPage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
+          <Route
+            path="/candidate/onboarding"
+            element={
+              <ProtectedRoute allowedRoles={['CANDIDATE']}>
+                <CandidateOnboardingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute allowedRoles={['CANDIDATE']} requireCompleteProfile={true}>
+                <CandidateProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/candidate/profile" element={<Navigate to="/profile" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

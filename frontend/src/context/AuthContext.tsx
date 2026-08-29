@@ -12,6 +12,7 @@ export interface AuthUser {
   firstName?: string | null;
   lastName?: string | null;
   avatarUrl?: string | null;
+  profileCompleted?: boolean;
   profile?: any;
 }
 
@@ -28,6 +29,7 @@ interface AuthContextType {
   signInWithOAuth: (provider: OAuthProvider) => Promise<void>;
   signOut: () => Promise<void>;
   clearAuthError: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -69,6 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           firstName: profile?.firstName || null,
           lastName: profile?.lastName || null,
           avatarUrl: profile?.avatarUrl || null,
+          profileCompleted: Boolean(profile?.profileCompleted),
           profile,
         };
       }
@@ -166,8 +169,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const callbackUrl = `${window.location.origin}/auth/callback`;
 
-      const options: { redirectTo: string } = {
+      const options: {
+        redirectTo: string;
+        queryParams?: Record<string, string>;
+      } = {
         redirectTo: callbackUrl,
+        queryParams: {
+          prompt: 'select_account',
+          access_type: 'offline',
+        },
       };
 
       const { error } = await supabase.auth.signInWithOAuth({
@@ -194,6 +204,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   };
 
+  const refreshUser = async () => {
+    const { data: { session: currentSession } } = await supabase.auth.getSession();
+    await refreshUserData(currentSession);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -209,6 +224,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signInWithOAuth,
         signOut,
         clearAuthError,
+        refreshUser,
       }}
     >
       {children}
