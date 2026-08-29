@@ -16,8 +16,17 @@ const parseAllowedOrigins = () => {
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
-    if (!origin) return callback(null, true);
+    // Allow all local dev hosts
+    try {
+      const url = new URL(origin);
+      if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+        return callback(null, true);
+      }
+      // Allow any Vercel deployment preview or production domain
+      if (url.hostname.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+    } catch (_) {}
 
     const allowedOrigins = parseAllowedOrigins();
     const normalizedOrigin = origin.replace(/\/+$/, '');
@@ -26,6 +35,7 @@ export const corsMiddleware = cors({
       return callback(null, true);
     }
     
+    console.warn(`[CORS] Rejected origin: ${origin}`);
     return callback(new Error(`Origin ${origin} not allowed by CORS policy`));
   },
   credentials: true,

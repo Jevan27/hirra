@@ -150,7 +150,21 @@ class JobRepository {
     return jobs.map(formatJob);
   }
 
-  async findByFilters({ q, location, employmentType, workArrangement, category, experienceLevel, minSalary, maxSalary }) {
+  async getByCompanyId(companyId) {
+    const jobs = await prisma.job.findMany({
+      where: { companyId, status: 'PUBLISHED' },
+      include: {
+        company: { include: { industry: true } },
+        category: true,
+        skills: { include: { skill: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    return jobs.map(formatJob);
+  }
+
+  async findByFilters(filters = {}, pagination = {}) {
+    const { q, location, employmentType, workArrangement, category, experienceLevel, minSalary, maxSalary } = filters;
     const where = { status: 'PUBLISHED' };
 
     if (q && q.trim()) {
@@ -225,17 +239,31 @@ class JobRepository {
       }
     }
 
-    const jobs = await prisma.job.findMany({
-      where,
-      include: {
-        company: { include: { industry: true } },
-        category: true,
-        skills: { include: { skill: true } }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
+    const page = Math.max(1, parseInt(pagination.page, 10) || 1);
+    const limit = Math.max(1, parseInt(pagination.limit, 10) || 20);
+    const skip = (page - 1) * limit;
 
-    return jobs.map(formatJob);
+    const [jobs, total] = await Promise.all([
+      prisma.job.findMany({
+        where,
+        include: {
+          company: { include: { industry: true } },
+          category: true,
+          skills: { include: { skill: true } }
+        },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit
+      }),
+      prisma.job.count({ where })
+    ]);
+
+    return {
+      jobs: jobs.map(formatJob),
+      total,
+      page,
+      limit
+    };
   }
 }
 

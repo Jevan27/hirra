@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
+import { apiClient } from '@/lib/api/client';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -12,6 +13,42 @@ export const AuthCallbackPage: React.FC = () => {
 
   useEffect(() => {
     let handled = false;
+
+    const resolveDestination = async (token: string): Promise<string> => {
+      const returnUrl = sessionStorage.getItem(RETURN_URL_KEY);
+      try {
+        sessionStorage.removeItem(RETURN_URL_KEY);
+      } catch {
+        // ignore
+      }
+
+      try {
+        const response = await apiClient.get<{
+          success: boolean;
+          data: {
+            uid: string;
+            email: string;
+            role: 'CANDIDATE' | 'EMPLOYER' | 'ADMIN';
+            profile?: any;
+          };
+        }>('/auth/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data?.success && response.data?.data) {
+          const { role, profile } = response.data.data;
+          if (role === 'CANDIDATE' && !profile?.profileCompleted) {
+            return '/candidate/onboarding';
+          }
+        }
+      } catch (err) {
+        console.warn('[AuthCallbackPage] Error checking profile status:', err);
+      }
+
+      return returnUrl || '/';
+    };
 
     const handleCallback = async () => {
       try {
@@ -35,27 +72,18 @@ export const AuthCallbackPage: React.FC = () => {
 
         if (session) {
           handled = true;
-          const returnUrl = sessionStorage.getItem(RETURN_URL_KEY) || '/';
-          try {
-            sessionStorage.removeItem(RETURN_URL_KEY);
-          } catch {
-            // ignore
-          }
-          navigate(returnUrl, { replace: true });
+          const targetUrl = await resolveDestination(session.access_token);
+          navigate(targetUrl, { replace: true });
           return;
         }
 
         // 3. If session not ready yet, listen for auth state change
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
           if (!handled && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && newSession) {
             handled = true;
-            const returnUrl = sessionStorage.getItem(RETURN_URL_KEY) || '/';
-            try {
-              sessionStorage.removeItem(RETURN_URL_KEY);
-            } catch {
-              // ignore
-            }
-            navigate(returnUrl, { replace: true });
+            subscription.unsubscribe();
+            const targetUrl = await resolveDestination(newSession.access_token);
+            navigate(targetUrl, { replace: true });
           }
         });
 

@@ -76,8 +76,8 @@ const EXTRACTION_JSON_SCHEMA_EXAMPLE = {
 
 // Default prioritized model fallback hierarchy (Best reasoning/context -> fast/lightweight fallback)
 const DEFAULT_MODEL_HIERARCHY = [
-  'openai/gpt-oss-120b',
   'qwen/qwen3.8-27b',
+  'openai/gpt-oss-120b',
   'qwen/qwen3.6-27b',
   'openai/gpt-oss-20b',
   'groq/compound',

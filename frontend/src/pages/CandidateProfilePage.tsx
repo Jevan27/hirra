@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { apiClient } from '@/lib/api/client';
@@ -106,8 +106,9 @@ export const CandidateProfilePage: React.FC = () => {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [resumes, setResumes] = useState<ResumeItem[]>([]);
 
-  // Resume Download State
+  // Resume Actions State
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [deletingResumeId, setDeletingResumeId] = useState<string | null>(null);
 
   // Delete Account Modal State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -115,10 +116,15 @@ export const CandidateProfilePage: React.FC = () => {
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  // Fetch full profile on mount
+  // Fetch full profile once on mount (or when user identity changes)
+  const hasFetchedProfile = useRef(false);
   useEffect(() => {
     const fetchProfile = async () => {
       if (!session?.access_token) return;
+      // Only fetch once per user identity — not on every token refresh / tab focus
+      if (hasFetchedProfile.current) return;
+      hasFetchedProfile.current = true;
+
       setIsLoadingProfile(true);
       try {
         const response = await apiClient.get<{ success: boolean; data: any }>('/candidate/profile', {
@@ -198,7 +204,8 @@ export const CandidateProfilePage: React.FC = () => {
     };
 
     fetchProfile();
-  }, [session]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid]);
 
   // Handle Save Profile
   const handleSaveProfile = async (e: React.FormEvent) => {
@@ -271,6 +278,35 @@ export const CandidateProfilePage: React.FC = () => {
       alert(err?.response?.data?.message || 'Unable to download CV at this time.');
     } finally {
       setDownloadingId(null);
+    }
+  };
+
+  // Handle Delete Resume
+  const handleDeleteResume = async (resumeId: string) => {
+    if (!window.confirm('Are you sure you want to delete this resume? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingResumeId(resumeId);
+    try {
+      const response = await apiClient.delete<{ success: boolean; message: string }>(
+        `/candidate/resumes/${resumeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+        }
+      );
+
+      if (response.data?.success) {
+        setResumes((prev) => prev.filter((r) => r.id !== resumeId));
+      } else {
+        alert(response.data?.message || 'Failed to delete resume.');
+      }
+    } catch (err: any) {
+      alert(err?.response?.data?.message || err?.message || 'Unable to delete resume at this time.');
+    } finally {
+      setDeletingResumeId(null);
     }
   };
 
@@ -942,9 +978,9 @@ export const CandidateProfilePage: React.FC = () => {
           <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cloudflare R2 Stored Resumes</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">Resumes</h3>
                 <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                  Your uploaded CVs are safely stored in your private Cloudflare R2 bucket.
+                  Manage your uploaded CVs and resumes for job applications.
                 </p>
               </div>
               <Button
@@ -1002,7 +1038,7 @@ export const CandidateProfilePage: React.FC = () => {
                         size="sm"
                         disabled={downloadingId === resume.id}
                         onClick={() => handleDownloadResume(resume.id)}
-                        className="rounded-xl gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800"
+                        className="rounded-xl gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 cursor-pointer"
                       >
                         {downloadingId === resume.id ? (
                           <Loader2 size={14} className="animate-spin" />
@@ -1010,6 +1046,21 @@ export const CandidateProfilePage: React.FC = () => {
                           <Download size={14} />
                         )}
                         Download
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={deletingResumeId === resume.id}
+                        onClick={() => handleDeleteResume(resume.id)}
+                        className="rounded-xl gap-1.5 text-xs font-semibold text-red-600 dark:text-red-400 border-red-200 dark:border-red-900/60 hover:bg-red-50 dark:hover:bg-red-950/50 cursor-pointer"
+                      >
+                        {deletingResumeId === resume.id ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : (
+                          <Trash2 size={14} />
+                        )}
+                        Delete
                       </Button>
                     </div>
                   </div>
@@ -1058,7 +1109,7 @@ export const CandidateProfilePage: React.FC = () => {
             </div>
 
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pt-2">
-              Deleting your account is <strong>permanent and irreversible</strong>. Your candidate profile, Cloudflare R2 uploaded CV files, job applications, saved jobs, and Supabase Auth credentials will be completely purged from Hirra's systems.
+              Deleting your account is <strong>permanent and irreversible</strong>. Your candidate profile, uploaded CV files, job applications, saved jobs, and account credentials will be completely purged from Hirra's systems.
             </p>
 
             <div className="pt-2">
@@ -1092,7 +1143,7 @@ export const CandidateProfilePage: React.FC = () => {
               Are you absolutely sure?
             </DialogTitle>
             <DialogDescription className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              This action cannot be undone. This will permanently delete your profile, work experience, education, Cloudflare R2 resume files, and authentication account.
+              This action cannot be undone. This will permanently delete your profile, work experience, education, uploaded resume files, and authentication account.
             </DialogDescription>
           </DialogHeader>
 

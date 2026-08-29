@@ -23,12 +23,14 @@ const upload = multer({
   fileFilter: (_req, file, cb) => {
     const allowedMimeTypes = [
       'application/pdf',
+      'application/x-pdf',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'application/msword',
       'text/plain',
+      'application/octet-stream',
     ];
 
-    const filename = file.originalname.toLowerCase();
+    const filename = (file.originalname || '').toLowerCase();
     const isAllowedExt =
       filename.endsWith('.pdf') ||
       filename.endsWith('.docx') ||
