@@ -9,10 +9,19 @@ export interface ExtendedApiError extends Error {
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  timeout: 15000,
+});
+
+// Request interceptor: ensure FormData automatically sets proper multipart boundary
+apiClient.interceptors.request.use((config) => {
+  if (config.data instanceof FormData) {
+    if (config.headers?.delete) {
+      config.headers.delete('Content-Type');
+    } else if (config.headers) {
+      delete config.headers['Content-Type'];
+    }
+  }
+  return config;
 });
 
 // Response interceptor for unified response extraction & friendly error enhancement

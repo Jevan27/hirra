@@ -48,8 +48,17 @@ const slugify = (text) => {
 export const extractCv = async (req, res, next) => {
   let uploadedR2Key = null;
 
+  console.log('\n======================================================');
+  console.log(`[CV-ANALYSIS] 📥 Received extract-cv request`);
+  console.log(`[CV-ANALYSIS] User: ${req.user?.email} (${req.user?.uid})`);
+
   try {
     if (!req.file) {
+      console.error('[CV-ANALYSIS] ❌ No file received by Multer!');
+      console.error('[CV-ANALYSIS] Request headers:', {
+        'content-type': req.headers['content-type'],
+        'content-length': req.headers['content-length']
+      });
       return res.status(400).json({
         success: false,
         error: 'NO_FILE_UPLOADED',
@@ -61,10 +70,13 @@ export const extractCv = async (req, res, next) => {
     const userId = req.user.uid;
     const resumeId = crypto.randomUUID();
 
+    console.log(`[CV-ANALYSIS] 📄 Document: "${originalname}" | ${(size / 1024).toFixed(1)} KB | MIME: ${mimetype}`);
+
     // 1. Upload Original CV to Private Cloudflare R2 Storage (if configured)
     let objectKey = null;
     if (r2StorageService.isConfigured()) {
       try {
+        console.log('[CV-ANALYSIS] ☁️ Uploading to Cloudflare R2...');
         const r2Result = await r2StorageService.uploadResume({
           buffer,
           mimeType: mimetype,
@@ -74,14 +86,18 @@ export const extractCv = async (req, res, next) => {
         });
         objectKey = r2Result.objectKey;
         uploadedR2Key = objectKey;
+        console.log(`[CV-ANALYSIS] ✅ Stored in R2 with key: ${objectKey}`);
       } catch (r2Err) {
-        console.warn('[CandidateController] R2 upload warning:', r2Err.message);
+        console.warn('[CV-ANALYSIS] ⚠️ R2 upload warning:', r2Err.message);
       }
+    } else {
+      console.log('[CV-ANALYSIS] ℹ️ Cloudflare R2 not configured. Skipping cloud file upload.');
     }
 
     // 2. Create PostgreSQL Resume Record (status: PROCESSING)
     let resumeRecord = null;
     try {
+      console.log('[CV-ANALYSIS] 🗄️ Saving resume record in database...');
       // Set all other resumes for this user to isDefault: false
       await prisma.resume.updateMany({
         where: { userId },
@@ -102,7 +118,9 @@ export const extractCv = async (req, res, next) => {
           isDefault: true
         }
       });
+      console.log(`[CV-ANALYSIS] ✅ Created Resume DB record ID: ${resumeId}`);
     } catch (dbErr) {
+      console.error('[CV-ANALYSIS] ❌ Database error saving resume record:', dbErr.message);
       // Clean up orphaned R2 object if DB creation fails
       if (uploadedR2Key) {
         await r2StorageService.deleteResume(uploadedR2Key);
@@ -111,9 +129,11 @@ export const extractCv = async (req, res, next) => {
     }
 
     // 3. In-memory plain text extraction
+    console.log('[CV-ANALYSIS] 🔍 Parsing document text...');
     const extractionResult = await cvTextExtractor.extractText(buffer, mimetype, originalname);
 
     if (!extractionResult.hasText) {
+      console.warn(`[CV-ANALYSIS] ⚠️ Document contained no extractable text (${extractionResult.charCount} chars). Status -> FAILED.`);
       await prisma.resume.update({
         where: { id: resumeId },
         data: { status: 'FAILED' }
@@ -132,15 +152,25 @@ export const extractCv = async (req, res, next) => {
       });
     }
 
+    console.log(`[CV-ANALYSIS] ✅ Extracted ${extractionResult.charCount} characters of readable text.`);
+    console.log(`[CV-ANALYSIS] 📝 Snippet:\n"${extractionResult.text.slice(0, 250).replace(/\n+/g, ' ')}..."`);
+
     // 4. Groq AI Structured Extraction with Multi-Model Fallback Chain
     try {
+      console.log('[CV-ANALYSIS] 🤖 Requesting AI extraction via Groq...');
       const { data: structuredData, modelUsed } = await groqExtractionService.extractCandidateData(extractionResult.text);
+
+      console.log(`[CV-ANALYSIS] 🎉 Groq AI Extraction successful! (Model: ${modelUsed})`);
+      console.log(`[CV-ANALYSIS] 👤 Extracted Candidate: ${structuredData.personal?.firstName || ''} ${structuredData.personal?.lastName || ''} | Title: ${structuredData.personal?.jobTitle || 'N/A'}`);
+      console.log(`[CV-ANALYSIS] 💼 Experience: ${structuredData.experience?.length || 0} items | 🎓 Education: ${structuredData.education?.length || 0} items | 🛠️ Skills: ${structuredData.skills?.length || 0}`);
 
       // Update Resume status to COMPLETED
       const updatedResume = await prisma.resume.update({
         where: { id: resumeId },
         data: { status: 'COMPLETED' }
       });
+
+      console.log('======================================================\n');
 
       return res.json({
         success: true,
@@ -156,12 +186,15 @@ export const extractCv = async (req, res, next) => {
         }
       });
     } catch (aiError) {
-      console.warn('[CandidateController] AI extraction fallback:', aiError.message);
+      console.error('[CV-ANALYSIS] ❌ Groq AI extraction failed:', aiError.message);
+      if (aiError.stack) console.error(aiError.stack);
 
       await prisma.resume.update({
         where: { id: resumeId },
         data: { status: 'FAILED' }
       });
+
+      console.log('======================================================\n');
 
       return res.status(200).json({
         success: false,
@@ -177,6 +210,8 @@ export const extractCv = async (req, res, next) => {
       });
     }
   } catch (err) {
+    console.error('[CV-ANALYSIS] ❌ Fatal error in extractCv controller:', err);
+    console.log('======================================================\n');
     next(err);
   }
 };

@@ -145,6 +145,8 @@ export const CandidateOnboardingPage: React.FC = () => {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
+    console.log('[Onboarding] 📤 Uploading CV:', selectedFile.name, `(${(selectedFile.size / 1024).toFixed(1)} KB)`);
+
     try {
       const stepTimer1 = setTimeout(() => setExtractingStep(2), 700); // 2: Extracting info
       const stepTimer2 = setTimeout(() => setExtractingStep(3), 1500); // 3: Structuring data
@@ -156,8 +158,8 @@ export const CandidateOnboardingPage: React.FC = () => {
         data?: any;
         resume?: { id: string; name: string; status: string };
       }>('/candidate/extract-cv', formData, {
+        timeout: 60000, // 60s timeout for upload, storage & AI extraction
         headers: {
-          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${session?.access_token}`,
         },
       });
@@ -165,12 +167,15 @@ export const CandidateOnboardingPage: React.FC = () => {
       clearTimeout(stepTimer1);
       clearTimeout(stepTimer2);
 
+      console.log('[Onboarding] 📥 Response received:', response.data);
+
       if (response.data.resume) {
         setCurrentResume(response.data.resume);
       }
 
       if (response.data.success && response.data.data) {
         const extracted = response.data.data;
+        console.log('[Onboarding] 🎉 Populating candidate form with extracted data:', extracted);
 
         // Populate Form
         if (extracted.personal?.firstName) setFirstName(extracted.personal.firstName);
@@ -191,12 +196,20 @@ export const CandidateOnboardingPage: React.FC = () => {
         setStep(3);
       } else {
         // Fallback message if extraction was partial or scanned image
+        console.warn('[Onboarding] ⚠️ Partial extraction warning:', response.data.message);
         setExtractionWarning(response.data.message || 'We could not extract text from this document. Your file is saved, and you can complete your profile manually.');
         setStep(3);
       }
     } catch (err: any) {
-      console.warn('[Onboarding] Extraction fallback:', err?.message);
-      setExtractionWarning('AI CV analysis is temporarily unavailable. Your file is safely stored, and you can enter your details below.');
+      console.error('[Onboarding] ❌ CV upload & extraction failed:', err);
+      console.error('[Onboarding] Error diagnostic:', {
+        message: err?.message,
+        status: err?.response?.status,
+        data: err?.response?.data,
+        isNetworkError: !err?.response
+      });
+      const detailMsg = err?.response?.data?.message || err?.message || 'AI CV analysis took longer than expected';
+      setExtractionWarning(`${detailMsg}. Your file is safely stored, and you can enter your details below or click retry.`);
       setStep(3);
     }
   };
@@ -213,6 +226,7 @@ export const CandidateOnboardingPage: React.FC = () => {
         message?: string;
         data?: any;
       }>(`/candidate/resumes/${currentResume.id}/retry-extract`, {}, {
+        timeout: 60000, // 60s timeout for AI extraction
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
@@ -615,7 +629,7 @@ export const CandidateOnboardingPage: React.FC = () => {
                 {currentResume && (
                   <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold text-indigo-700 dark:text-indigo-300">
                     <FileText size={14} className="text-indigo-600" />
-                    <span>Stored in Cloudflare R2: <strong>{currentResume.name}</strong></span>
+                    <span>Uploaded Resume: <strong>{currentResume.name}</strong></span>
                   </div>
                 )}
               </div>

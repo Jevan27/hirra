@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return null;
   }, []);
 
-  const refreshUserData = useCallback(async (currentSession: Session | null) => {
+  const refreshUserData = useCallback(async (currentSession: Session | null, forceSync = true) => {
     if (!currentSession?.access_token || !currentSession.user) {
       setUser(null);
       setSupabaseUser(null);
@@ -93,22 +93,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSession(currentSession);
     setSupabaseUser(currentSession.user);
 
-    // Sync with PostgreSQL via backend
-    const backendUser = await syncUserWithBackend(currentSession.access_token);
+    // Only hit the backend if this is a real auth event (sign in, initial load, explicit refresh)
+    // Skip for TOKEN_REFRESHED to avoid flooding the backend on every tab focus
+    if (forceSync) {
+      const backendUser = await syncUserWithBackend(currentSession.access_token);
 
-    if (backendUser) {
-      setUser(backendUser);
-    } else {
-      // Graceful fallback if backend is momentarily unreachable
-      const meta = currentSession.user.user_metadata || {};
-      setUser({
-        uid: currentSession.user.id,
-        email: currentSession.user.email || '',
-        role: meta.role || 'CANDIDATE',
-        firstName: meta.first_name || meta.given_name || meta.name || null,
-        lastName: meta.last_name || meta.family_name || null,
-        avatarUrl: meta.avatar_url || meta.picture || null,
-      });
+      if (backendUser) {
+        setUser(backendUser);
+      } else {
+        // Graceful fallback if backend is momentarily unreachable
+        const meta = currentSession.user.user_metadata || {};
+        setUser({
+          uid: currentSession.user.id,
+          email: currentSession.user.email || '',
+          role: meta.role || 'CANDIDATE',
+          firstName: meta.first_name || meta.given_name || meta.name || null,
+          lastName: meta.last_name || meta.family_name || null,
+          avatarUrl: meta.avatar_url || meta.picture || null,
+        });
+      }
     }
 
     setIsLoading(false);
@@ -117,18 +120,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
 
-    // Check active session on mount
+    // Check active session on mount (this IS a real auth event — sync with backend)
     supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
       if (mounted) {
-        refreshUserData(initialSession);
+        refreshUserData(initialSession, true);
       }
     });
 
-    // Listen for auth events (sign in, sign out, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (mounted) {
+    // Listen for auth events
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      if (!mounted) return;
+
+      if (event === 'SIGNED_OUT') {
+        // Full reset
         startTransition(() => {
-          refreshUserData(newSession);
+          refreshUserData(null, true);
+        });
+      } else if (event === 'SIGNED_IN') {
+        // Real sign-in — sync with backend
+        startTransition(() => {
+          refreshUserData(newSession, true);
+        });
+      } else if (event === 'TOKEN_REFRESHED') {
+        // Token refresh on tab focus — just update session reference silently
+        // Do NOT call backend again; keep existing user data
+        startTransition(() => {
+          if (newSession) {
+            setSession(newSession);
+            setSupabaseUser(newSession.user);
+          }
         });
       }
     });
